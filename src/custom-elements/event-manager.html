@@ -10,12 +10,40 @@
 
     <div>
         <h1>EVENT MANAGER </h1>
+        <paper-icon-button on-tap="addEvent">PUSH</paper-icon-button>
     </div>
   </template>
 
   <script>
     Polymer({
-      is: 'event-manager'
+      is: 'event-manager',
+
+      addEvent: function(){
+          console.log('adding');
+
+      
+          var db = firebase.database();
+
+          var email = 'walter.miani@gmail.com';
+          var password = 'walter.miani@gmail.com';
+
+
+          firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            console.log(errorCode);
+            console.log(errorMessage);
+            // ...
+          });
+
+          db.ref('prova/').set({
+            nome: 'nome',
+            cognome: 'cognome'
+          });
+
+      }
     });
   </script>
 </dom-module>
