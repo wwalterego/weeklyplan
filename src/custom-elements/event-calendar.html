@@ -1,0 +1,37 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+
+
+<dom-module id="event-calendar">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <h1>CALENDAR</h1>
+
+   <template is="dom-repeat" items="[[days]]" as="day">
+       <div>[[day.name]]</div>
+   </template>
+   
+  </template>
+
+  <script>
+    Polymer({
+      is: 'event-calendar',
+
+      properties: {
+            
+            days:{
+              type: Array,
+              value:  [{ name: 'monday'}, {name: 'friday'}, {name: 'tuesday'}]
+            }
+      }
+     
+    });
+  </script>
+</dom-module>
