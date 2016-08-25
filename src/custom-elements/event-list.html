@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 
-<dom-module id="event-manager">
+<dom-module id="event-list">
   <template>
     <style include="shared-styles">
       :host {
@@ -13,7 +13,7 @@
     </style>
 
     <div>
-        <h1>EVENT MANAGER </h1>
+        <h1>EVENT list </h1>
         <paper-input label="Title" id="title"></paper-input>
         <paper-input label="Description" id="description"></paper-input>
         <paper-input label="Duration" id="duration"></paper-input>
@@ -24,7 +24,7 @@
 
   <script>
     Polymer({
-      is: 'event-manager',
+      is: 'event-list',
 
       addEvent: function(){
           console.log('adding');
