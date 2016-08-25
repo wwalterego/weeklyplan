@@ -1,3 +1,4 @@
 sbower_components/
 build/
 node_modules/
+public/

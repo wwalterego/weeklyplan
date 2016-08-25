@@ -16,10 +16,12 @@
       }
     </style>
 
-    <h1>CALENDAR</h1>
-
-   <template is="dom-repeat" items="[[days]]" as="day">
-     <div class="day">
+   <!-- <h1>CALENDAR</h1> -->
+<template is="dom-if" if="[[isWeekVisible('A')]]">
+<div id="weekA">
+<h1>week A</h1>
+<template is="dom-repeat" items="[[days]]" as="day">
+     <div class="day card">
         <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
         <div>
           <template is="dom-repeat" items="[[start]]">
@@ -29,8 +31,27 @@
      </div>
       
    </template>
-   
-  </template>
+</div>
+ </template>
+
+<template is="dom-if" if="[[isWeekVisible('B')]]">
+  <div id="weekB">
+  <h1>week B</h1>
+  <template is="dom-repeat" items="[[days]]" as="day">
+      <div class="day card">
+          <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
+          <div>
+            <template is="dom-repeat" items="[[start]]">
+              <p>[[item]] - [[getEnd(item)]]</p>
+            </template>
+          </div>
+      </div>
+        
+    </template>
+  </div>
+
+</template>
+</template>
 
   <script>
     Polymer({
@@ -52,6 +73,10 @@
 
       getEnd: function(item){
         return item+1;
+      },
+
+      isWeekVisible: function(week){
+        return week == 'A';
       }
      
     });
