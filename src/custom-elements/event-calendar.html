@@ -10,12 +10,24 @@
 
         padding: 10px;
       }
+
+      .day{
+        float: left;
+      }
     </style>
 
     <h1>CALENDAR</h1>
 
    <template is="dom-repeat" items="[[days]]" as="day">
-       <div>[[day.name]]</div>
+     <div class="day">
+        <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
+        <div>
+          <template is="dom-repeat" items="[[start]]">
+            <p>[[item]] - [[getEnd(item)]]</p>
+          </template>
+        </div>
+     </div>
+      
    </template>
    
   </template>
@@ -28,8 +40,18 @@
             
             days:{
               type: Array,
-              value:  [{ name: 'monday'}, {name: 'friday'}, {name: 'tuesday'}]
+              value: [{ name: 'Monday'}, {name: 'Tuesday'}, {name: 'Wednesday'},
+              { name: 'Thursday'}, {name: 'Friday'}, {name: 'Saturday'},{name: 'Sunday'}]
+            },
+
+            start:{
+              type: Array,
+              value: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
             }
+      },
+
+      getEnd: function(item){
+        return item+1;
       }
      
     });
