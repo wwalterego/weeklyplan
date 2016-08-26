@@ -38,8 +38,12 @@
 
 
       <div><p>repeat</p>
-      <template is="dom-repeat" items="[[events]]">
-        <div>Event: [[item.title]]</div>
+      <template is="dom-repeat" items="[[events]]" as="event">
+        <div><span>Event: [[event.title]]<span>
+            <span on-tap="removeEvent">X</span>
+
+        </div>
+        
       </template>
     </template>
 
@@ -83,6 +87,12 @@
 
       logout: function(){
       this.$.auth.signOut();
+      },
+
+      removeEvent: function(e){
+          console.log(e.model.event);
+
+          firebase.database().ref().child('/events/' + e.model.event.$key).remove();
       }
     });
   </script>

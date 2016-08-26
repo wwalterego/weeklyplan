@@ -18,11 +18,7 @@
         <paper-input label="Description" id="description"></paper-input>
         <paper-input label="Duration" id="duration"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
-          <paper-fab
-            icon="add"
-            on-tap="addEvent"
-            aria-label="Add event">
-         </paper-fab>
+       <paper-button raised on-tap="addEvent">+</paper-button>
     </div>
   </template>
 
@@ -69,7 +65,15 @@
           }
 
           db.ref().child('events').push(event);
+          this.clearEvent();
 
+      },
+
+      clearEvent: function(){
+          this.$.title.value = "";
+          this.$.description.value = "";
+          this.$.abbreviation.value = "";
+          this.$.duration.value = "";
       }
     });
   </script>
