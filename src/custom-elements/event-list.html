@@ -14,29 +14,28 @@
     </style>
 
 
-    <!--<firebase-document
+    <firebase-document
         id="eventlist"
         app-name="weeklyplan"
         path="/events/"
         data="{{events}}">
-    </firebase-document>-->
+    </firebase-document>
 
       <firebase-auth id="auth" app-name="weeklyplan" on-error="handleError">
       </firebase-auth>
-
-
+<!--
       <firebase-query
           id="query"
           app-name="weeklyplan"
-          path="/events/"
+          path=""
           data="{{events}}">
-      </firebase-query>
+      </firebase-query>-->
 
       <paper-button on-tap="tap">push me</paper-button>
       <paper-button on-tap="login">log me in</paper-button>
       <paper-button on-tap="logout">log me out</paper-button>
 
-      <template is="dom-repeat" items="{{data}}" as="event">
+      <template is="dom-repeat" items="{{events}}" as="event">
         <div>titolo:<div>
         <div>[[event.__firebaseKey__]]<div>
       </template>
@@ -49,7 +48,8 @@
       properties: {
         events: {
           type: Object,
-          observer: 'dataChanged'
+          observer: 'dataChanged',
+          value: [{__firebaseKey__: 'primo'}]
         }
       },
 
@@ -60,8 +60,17 @@
       tap: function(){
         
          console.log(this.events);
-        // console.log(this.$.eventlist.db);
         console.log(this.$.auth.signedIn);
+
+      //this.events.push({__firebaseKey__: "secondo"});
+      this.notifyPath('events', this.events.slice());
+
+      var path = "/events/prova";
+      var value = {ciao: Math.random()};
+
+
+      this.$.eventlist.setStoredValue(path, value);
+
       },
 
       login: function(){
