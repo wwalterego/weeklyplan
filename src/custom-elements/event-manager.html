@@ -56,11 +56,19 @@
           var abbreviation = this.$.abbreviation.value;
           var duration = this.$.duration.value;
 
-          db.ref('events/' + title + '/').set({
+          // db.ref('events/' + title + '/').set({
+          //   description: description,
+          //   abbreviation: abbreviation,
+          //   duration: duration
+          // });
+          var event = {
+            title: title,
             description: description,
             abbreviation: abbreviation,
             duration: duration
-          });
+          }
+
+          db.ref().child('events').push(event);
 
       }
     });
