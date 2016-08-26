@@ -17,13 +17,14 @@
     <firebase-document
         id="eventlist"
         app-name="weeklyplan"
-        path="/events/"
+        path="/events"
         data="{{events}}">
     </firebase-document>
 
       <firebase-auth id="auth" app-name="weeklyplan" on-error="handleError">
       </firebase-auth>
-<!--
+
+      <!--
       <firebase-query
           id="query"
           app-name="weeklyplan"
@@ -35,11 +36,16 @@
       <paper-button on-tap="login">log me in</paper-button>
       <paper-button on-tap="logout">log me out</paper-button>
 
-      <template is="dom-repeat" items="{{events}}" as="event">
+
+      <div><p>repeat</p>
+      <!--<template is="dom-repeat" items="{{events.list}}" as="event">
         <div>titolo:<div>
         <div>[[event.__firebaseKey__]]<div>
-      </template>
+      </template>-->
     </template>
+
+      </div>
+      
 
   <script>
     Polymer({
@@ -48,8 +54,8 @@
       properties: {
         events: {
           type: Object,
-          observer: 'dataChanged',
-          value: [{__firebaseKey__: 'primo'}]
+          notify: true,
+          observer: 'dataChanged'
         }
       },
 
@@ -58,19 +64,7 @@
       },
 
       tap: function(){
-        
-         console.log(this.events);
-        console.log(this.$.auth.signedIn);
-
-      //this.events.push({__firebaseKey__: "secondo"});
-      this.notifyPath('events', this.events.slice());
-
-      var path = "/events/prova";
-      var value = {ciao: Math.random()};
-
-
-      this.$.eventlist.setStoredValue(path, value);
-
+      console.log(this.$.eventlist.data);
       },
 
       login: function(){
