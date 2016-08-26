@@ -18,8 +18,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="my-icons.html">
 
 <link rel="import" href="./custom-elements/event-manager.html">
@@ -109,6 +111,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title>My App</div>
           </app-toolbar>
         </app-header>
+
+         <firebase-app
+            name="weeklyplan"
+            api-key="AIzaSyA9MGv4AdP8fQIjqL7Of3RZjsEgcpgkZE0"
+            auth-domain="weeklyplan.firebaseapp.com"
+            database-url="https://weeklyplan.firebaseio.com">
+        </firebase-app>
 
         <iron-pages
             selected="[[page]]"

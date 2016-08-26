@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
 
 <dom-module id="event-list">
@@ -12,52 +13,67 @@
       }
     </style>
 
-    <div>
-        <h1>EVENT list </h1>
-        <paper-input label="Title" id="title"></paper-input>
-        <paper-input label="Description" id="description"></paper-input>
-        <paper-input label="Duration" id="duration"></paper-input>
-        <paper-input label="Abbreviation" id="abbreviation"></paper-input>
-        <paper-button raised on-tap="addEvent">Add</paper-button>
-    </div>
-  </template>
+
+    <!--<firebase-document
+        id="eventlist"
+        app-name="weeklyplan"
+        path="/events/"
+        data="{{events}}">
+    </firebase-document>-->
+
+      <firebase-auth id="auth" app-name="weeklyplan" on-error="handleError">
+      </firebase-auth>
+
+
+      <firebase-query
+          id="query"
+          app-name="weeklyplan"
+          path="/events/"
+          data="{{events}}">
+      </firebase-query>
+
+      <paper-button on-tap="tap">push me</paper-button>
+      <paper-button on-tap="login">log me in</paper-button>
+      <paper-button on-tap="logout">log me out</paper-button>
+
+      <template is="dom-repeat" items="{{data}}" as="event">
+        <div>titolo:<div>
+        <div>[[event.__firebaseKey__]]<div>
+      </template>
+    </template>
 
   <script>
     Polymer({
       is: 'event-list',
 
-      addEvent: function(){
-          console.log('adding');
+      properties: {
+        events: {
+          type: Object,
+          observer: 'dataChanged'
+        }
+      },
 
-      
-          var db = firebase.database();
+      dataChanged: function(newData, oldData){
+        console.log('data has changed');
+      },
 
-          var email = 'walter.miani@gmail.com';
-          var password = 'walter.miani@gmail.com';
+      tap: function(){
+        
+         console.log(this.events);
+        // console.log(this.$.eventlist.db);
+        console.log(this.$.auth.signedIn);
+      },
 
+      login: function(){
 
-          firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
+        var email = "walter.miani@gmail.com";
+        var password = "walter.miani@gmail.com"
+        this.$.auth.signInWithEmailAndPassword(email, password);
+      //this.$.auth.signInAnonymously();
+      },
 
-            console.log(errorCode);
-            console.log(errorMessage);
-            // ...
-          });
-
-
-          var title = this.$.title.value;
-          var description = this.$.description.value;
-          var abbreviation = this.$.abbreviation.value;
-          var duration = this.$.duration.value;
-
-          db.ref('events/' + title + '/').set({
-            description: description,
-            abbreviation: abbreviation,
-            duration: duration
-          });
-
+      logout: function(){
+      this.$.auth.signOut();
       }
     });
   </script>

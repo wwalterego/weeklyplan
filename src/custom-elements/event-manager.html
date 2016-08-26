@@ -18,7 +18,11 @@
         <paper-input label="Description" id="description"></paper-input>
         <paper-input label="Duration" id="duration"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
-        <paper-button raised on-tap="addEvent">Add</paper-button>
+          <paper-fab
+            icon="add"
+            on-tap="addEvent"
+            aria-label="Add event">
+         </paper-fab>
     </div>
   </template>
 
