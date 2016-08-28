@@ -73,8 +73,10 @@
         <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
           <template is="dom-repeat" items="{{weekEvents}}" as="event">
             <template is="dom-if" if="{{isDay(event,day)}}">
-              <div>[[event.title]]</div>
-              <div>starts at: [[event.start]] - ends at: [[getEventEnd(event)]]</div>
+              <div>[[event.title]]
+                <span on-tap="removeEvent">X</span>
+              </div>
+              <div>starts at: [[event.start]] - ends [[getEventEnd(event)]]</div>
             </template>
           </template>
         <!--<div>
@@ -158,7 +160,27 @@
       },
 
       getEventEnd: function(event){
-        return Number(event.start) + Number(event.duration);
+
+        var end = Number(event.start) + Number(event.duration);
+        var endStr = end.toString();
+
+        if(end <= 24){return 'at: ' + endStr;}
+        else{
+            var dayIndex = this.getIndex(event.day);
+            if(dayIndex == 7)
+               dayIndex = 0;
+
+            return 'on ' + this.days[dayIndex].name;
+        }
+      },
+
+      getIndex: function(day){
+
+          for(var i = 0; i<this.days.length; i++){
+            if(this.days[i].name == day)
+             return i+1;
+          }
+
       },
 
       isWeekVisible: function(week){
@@ -186,9 +208,13 @@
       },
 
       isDay: function(event, day){
-        console.log(event);
-        console.log(day);
+        
         return day.name == event.day;
+      },
+
+      removeEvent: function(e){
+        
+          firebase.database().ref().child('/weekEvents/' + e.model.event.$key).remove();
       }
      
     });

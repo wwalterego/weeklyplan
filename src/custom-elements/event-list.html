@@ -90,8 +90,7 @@
       },
 
       removeEvent: function(e){
-          console.log(e.model.event);
-
+        
           firebase.database().ref().child('/events/' + e.model.event.$key).remove();
       }
     });
