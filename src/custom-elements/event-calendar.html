@@ -27,6 +27,13 @@
           data="{{events}}">
 </firebase-query>
 
+<firebase-query
+          id="query"
+          app-name="weeklyplan"
+          path="/weekEvents"
+          data="{{weekEvents}}">
+</firebase-query>
+
 
 <paper-dropdown-menu label="Events">
   <paper-listbox class="dropdown-content" selected="{{chosenEvent}}">
@@ -60,8 +67,15 @@
 <div id="weekA">
 <h1>week A</h1>
 <template is="dom-repeat" items="[[days]]" as="day">
+
+
      <div class="day card">
         <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
+          <template is="dom-repeat" items="{{weekEvents}}" as="event">
+            <template is="dom-if" if="{{isDay(event,day)}}">
+              <div>[[event.title]]</div>
+            </template>
+          </template>
         <div>
           <template is="dom-repeat" items="[[start]]">
             <p>[[item]] - [[getEnd(item)]]</p>
@@ -116,6 +130,13 @@
              // observer: 'dataChanged'
           },
 
+          weekEvents: {
+              type: Array,
+              notify: true,
+              value: [],
+             // observer: 'dataChanged'
+          },
+
            chosenEvent:{
             type: String
           },
@@ -157,6 +178,12 @@
 
       firebase.database().ref().child('weekEvents').push(data);
 
+      },
+
+      isDay: function(event, day){
+        console.log(event);
+        console.log(day);
+        return day.name == event.day;
       }
      
     });
