@@ -74,13 +74,14 @@
           <template is="dom-repeat" items="{{weekEvents}}" as="event">
             <template is="dom-if" if="{{isDay(event,day)}}">
               <div>[[event.title]]</div>
+              <div>starts at: [[event.start]] - ends at: [[getEventEnd(event)]]</div>
             </template>
           </template>
-        <div>
+        <!--<div>
           <template is="dom-repeat" items="[[start]]">
             <p>[[item]] - [[getEnd(item)]]</p>
           </template>
-        </div>
+        </div>-->
      </div>
       
    </template>
@@ -154,6 +155,10 @@
 
       getEnd: function(item){
         return item+1;
+      },
+
+      getEventEnd: function(event){
+        return Number(event.start) + Number(event.duration);
       },
 
       isWeekVisible: function(week){
