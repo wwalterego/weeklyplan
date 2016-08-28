@@ -1,5 +1,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
 
 <dom-module id="event-calendar">
@@ -17,6 +20,42 @@
     </style>
 
    <!-- <h1>CALENDAR</h1> -->
+ <firebase-query
+          id="query"
+          app-name="weeklyplan"
+          path="/events"
+          data="{{events}}">
+</firebase-query>
+
+
+<paper-dropdown-menu label="Events">
+  <paper-listbox class="dropdown-content" selected="{{chosenEvent}}">
+    <template is="dom-repeat" items="[[events]]" as="event">
+      <paper-item>[[event.title]]</paper-item>
+    </template>
+  </paper-listbox>
+</paper-dropdown-menu>   
+
+<paper-dropdown-menu label="Day">
+  <paper-listbox class="dropdown-content" selected="{{chosenDay}}">
+    <template is="dom-repeat" items="[[days]]" as="day">
+      <paper-item>[[day.name]]</paper-item>
+    </template>
+  </paper-listbox>
+</paper-dropdown-menu>  
+
+
+<paper-dropdown-menu label="Starts at: ">
+  <paper-listbox class="dropdown-content" selected="{{startHour}}">
+    <template is="dom-repeat" items="[[start]]" as="hour">
+      <paper-item>[[hour]]</paper-item>
+    </template>
+  </paper-listbox>
+</paper-dropdown-menu>  
+<paper-button on-tap="addEventToWeek">Add</paper-button>
+
+
+
 <template is="dom-if" if="[[isWeekVisible('A')]]">
 <div id="weekA">
 <h1>week A</h1>
@@ -68,7 +107,28 @@
             start:{
               type: Array,
               value: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
-            }
+            },
+
+             events: {
+              type: Array,
+              notify: true,
+              value: [],
+             // observer: 'dataChanged'
+          },
+
+           chosenEvent:{
+            type: String
+          },
+
+          chosenDay:{
+            type: String
+          },
+
+          startHour: {
+            type: Number
+          }
+
+          
       },
 
       getEnd: function(item){
@@ -77,6 +137,26 @@
 
       isWeekVisible: function(week){
         return week == 'A';
+      },
+
+      addEventToWeek: function(){
+      
+        var event = this.events[this.chosenEvent];
+        var day = this.days[this.chosenDay];
+        var hour = this.start[this.startHour];
+
+
+
+      var data = {
+        title: event.title,
+        duration: event.duration,
+        start: hour,
+        day: day.name
+      }
+      
+
+      firebase.database().ref().child('weekEvents').push(data);
+
       }
      
     });
