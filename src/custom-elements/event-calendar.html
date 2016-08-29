@@ -17,6 +17,19 @@
       .today {
         color: red;
       }
+
+      .weekEventContainer{
+        border-bottom: 1px grey solid; 
+        padding: 5px;
+      }
+
+      .removeEvent{
+        padding: 2px;
+      }
+
+      .eventTitle{
+        font-size: x-large !important;
+      }
       
     </style>
 
@@ -71,10 +84,12 @@
         <div id="A_[[day.name]]" class$="{{isToday(day)}}"><h3>[[day.name]]</h3></div>
           <template is="dom-repeat" items="{{weekEvents}}" as="event" sort="sortByStart">
             <template is="dom-if" if="{{isDay(event,day)}}">
-              <div>[[event.title]]
-                <span on-tap="removeEvent">X</span>
+              <div class="weekEventContainer">
+                <div><span class="eventTitle">[[event.title]]</span>
+                  <paper-button class="removeEvent" raised on-tap="removeEvent">X</paper-button>
+                </div>
+                <div>starts at: [[event.start]] - ends [[getEventEnd(event)]]</div>
               </div>
-              <div>starts at: [[event.start]] - ends [[getEventEnd(event)]]</div>
             </template>
           </template>
         <!--<div>
