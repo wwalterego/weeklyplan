@@ -13,10 +13,7 @@
 
         padding: 10px;
       }
-
-      .day{
-        float: left;
-      }
+      
     </style>
 
    <!-- <h1>CALENDAR</h1> -->
@@ -62,7 +59,6 @@
 <paper-button on-tap="addEventToWeek">Add</paper-button>
 
 
-
 <template is="dom-if" if="[[isWeekVisible('A')]]">
 <div id="weekA">
 <h1>week A</h1>
@@ -71,7 +67,7 @@
 
      <div class="day card">
         <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
-          <template is="dom-repeat" items="{{weekEvents}}" as="event">
+          <template is="dom-repeat" items="{{weekEvents}}" as="event" sort="sortByStart">
             <template is="dom-if" if="{{isDay(event,day)}}">
               <div>[[event.title]]
                 <span on-tap="removeEvent">X</span>
@@ -193,18 +189,34 @@
         var day = this.days[this.chosenDay];
         var hour = this.start[this.startHour];
 
-
-
       var data = {
         title: event.title,
         duration: event.duration,
         start: hour,
         day: day.name
       }
-      
-
       firebase.database().ref().child('weekEvents').push(data);
 
+      },
+
+      sortByStart: function(a,b){
+
+      var sa = Number(a.start);
+      var sb = Number(b.start);
+      var retval;
+       
+        if(a.day == b.day){
+          console.log('sorting');
+          
+          if(sa == sb){
+            retval = 0
+          } 
+          retval = sa > sb? 1 : -1;
+        }
+        else{
+          retval = null;
+        }
+        console.log(retval);
       },
 
       isDay: function(event, day){
