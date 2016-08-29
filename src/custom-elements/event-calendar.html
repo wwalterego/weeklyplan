@@ -13,6 +13,10 @@
 
         padding: 10px;
       }
+
+      .today {
+        color: red;
+      }
       
     </style>
 
@@ -61,12 +65,10 @@
 
 <template is="dom-if" if="[[isWeekVisible('A')]]">
 <div id="weekA">
-<h1>week A</h1>
-<template is="dom-repeat" items="[[days]]" as="day">
-
-
+  <h1>week A</h1>
+  <template is="dom-repeat" items="[[days]]" as="day">
      <div class="day card">
-        <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
+        <div id="A_[[day.name]]" class$="{{isToday(day)}}"><h3>[[day.name]]</h3></div>
           <template is="dom-repeat" items="{{weekEvents}}" as="event" sort="sortByStart">
             <template is="dom-if" if="{{isDay(event,day)}}">
               <div>[[event.title]]
@@ -81,10 +83,9 @@
           </template>
         </div>-->
      </div>
-      
    </template>
 </div>
- </template>
+</template>
 
 <!--<template is="dom-if" if="[[isWeekVisible('B')]]">
   <div id="weekB">
@@ -125,15 +126,13 @@
              events: {
               type: Array,
               notify: true,
-              value: [],
-             // observer: 'dataChanged'
+              value: []
           },
 
           weekEvents: {
               type: Array,
               notify: true,
-              value: [],
-             // observer: 'dataChanged'
+              value: []
           },
 
            chosenEvent:{
@@ -183,6 +182,16 @@
         return week == 'A';
       },
 
+      isToday: function(day){
+        
+        console.log(day.name == moment().format('dddd'));
+
+        if(day.name == moment().format('dddd'))
+        return 'today';
+        else 
+        return 'other';
+      },
+
       addEventToWeek: function(){
       
         var event = this.events[this.chosenEvent];
@@ -204,19 +213,13 @@
       var sa = Number(a.start);
       var sb = Number(b.start);
       var retval;
-       
-        if(a.day == b.day){
-          console.log('sorting');
+      
+      if(sa == sb){
+        retval = 0
+      } 
+      retval = sa > sb? 1 : -1;
           
-          if(sa == sb){
-            retval = 0
-          } 
-          retval = sa > sb? 1 : -1;
-        }
-        else{
-          retval = null;
-        }
-        console.log(retval);
+      return retval;
       },
 
       isDay: function(event, day){
