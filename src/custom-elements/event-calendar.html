@@ -84,9 +84,6 @@
 <paper-button on-tap="addEventToWeek">Add</paper-button>
 <div>
 
-
-<paper-button on-tap="tap">asd</paper-button>
-
 <template is="dom-if" if="[[isWeekVisible('A')]]">
 <div id="weekA">
   <h1>week A</h1>
@@ -164,7 +161,7 @@
            chosenEvent: { type: String },
           chosenDay: { type: String },
           startHour: { type: Number},
-          showMode: { type: Object,value: "today" }
+          showMode: { type: Object,value: "week" }
       },
 
       tap:function(){
@@ -231,7 +228,48 @@
         start: hour,
         day: day.name
       }
-      firebase.database().ref().child('weekEvents').push(data);
+
+      // var data = {
+      //   title: "prova",
+      //   duration: 4,
+      //   start: 9,
+      //   day: "Tuesday"
+      // }
+
+        firebase.database().ref('/weekEvents/').once('value').then(function(snapshot) {
+            var weekEvents = snapshot.val();
+            var isOverlapped = false;
+            var start2 = Number(this.start);
+            var end2 = Number(this.start) + Number(this.duration);
+            
+            for(var index in weekEvents){
+              
+              var start1 = Number(weekEvents[index].start);
+              var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
+              
+              if(end2 > start1 && end2 < end1){
+                console.log('e2 > s1 e e2 < e1');
+                isOverlapped = true;
+                break;
+              } else if(start2 < start1 && end2 > end1){
+                console.log('s2 < s1 e e2 > e1')
+                isOverlapped = true;
+                break;
+              } else if(start2 > start1 && start2 < end1){
+                isOverlapped = true;
+                break;
+              }
+            }
+
+            if(!isOverlapped){
+              firebase.database().ref().child('weekEvents').push(data);
+            } else {
+              alert('Sovrapposizione di eventi');
+            }
+            
+
+        }.bind(data)); 
+      
 
       },
 
