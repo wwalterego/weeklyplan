@@ -46,7 +46,7 @@
       <div>
       <template is="dom-repeat" items="[[events]]" as="event">
         <div class="eventContainer">
-            <div><span>Event: [[event.title]]<span>
+            <div><span>[[event.title]]<span>
               <paper-button raised on-tap="removeEvent">X</paper-button>
               <paper-button raised on-tap="openEdit">Edit</paper-button>
           </div>
@@ -56,7 +56,7 @@
 
 
       <paper-dialog id="dialog">
-       <h3>edit event</h3>
+       <h3>Edit event</h3>
        <paper-input label="Title" id="title"></paper-input>
         <paper-input label="Description" id="description"></paper-input>
         <paper-input label="Duration" id="duration"></paper-input>
