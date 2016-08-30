@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 
 <dom-module id="event-list">
@@ -9,6 +10,11 @@
       :host {
         display: block;
 
+        padding: 10px;
+      }
+
+      .eventContainer{
+        border-bottom: 1px solid grey;
         padding: 10px;
       }
     </style>
@@ -37,18 +43,31 @@
       <paper-button on-tap="logout">log me out</paper-button>
 
 
-      <div><p>repeat</p>
+      <div>
       <template is="dom-repeat" items="[[events]]" as="event">
-        <div><span>Event: [[event.title]]<span>
-            <span on-tap="removeEvent">X</span>
-
+        <div class="eventContainer">
+            <div><span>Event: [[event.title]]<span>
+              <paper-button raised on-tap="removeEvent">X</paper-button>
+              <paper-button raised on-tap="openEdit">Edit</paper-button>
+          </div>
         </div>
-        
       </template>
-    </template>
+       </div>
 
+
+      <paper-dialog id="dialog">
+       <h3>edit event</h3>
+       <paper-input label="Title" id="title"></paper-input>
+        <paper-input label="Description" id="description"></paper-input>
+        <paper-input label="Duration" id="duration"></paper-input>
+        <paper-input label="Abbreviation" id="abbreviation"></paper-input>
+            <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus on-tap="updateEvent">Accept</paper-button>
       </div>
-      
+     </paper-dialog>
+
+    </template>
 
   <script>
     Polymer({
@@ -60,7 +79,9 @@
           notify: true,
           value: [],
           observer: 'dataChanged'
-        }
+        },
+
+        keyToUpdate: {type: String}
       },
 
       dataChanged: function(newData, oldData){
@@ -86,6 +107,34 @@
       removeEvent: function(e){
         
           firebase.database().ref().child('/events/' + e.model.event.$key).remove();
+      },
+
+      openEdit: function(e){
+
+        var event = e.model.event;
+
+        this.$.title.value = event.title;
+        this.$.description.value = event.description;
+        this.$.duration.value = event.duration;
+        this.$.abbreviation.value = event.abbreviation;
+
+        this.$.dialog.open();
+
+
+       	this.keyToUpdate = event.$key;
+      },
+
+      updateEvent(){
+        
+        var event = {
+          title: this.$.title.value,
+          desription: this.$.description.value,
+          duration: this.$.duration.value,
+          abbreviation: this.$.abbreviation.value 
+        }
+
+        firebase.database().ref().child('events/' + this.keyToUpdate + '/').update(event);
+
       }
     });
   </script>
