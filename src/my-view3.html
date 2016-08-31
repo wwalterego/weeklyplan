@@ -23,13 +23,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
   <div class="card">
-      <event-calendar></event-calendar>
+      <event-calendar events="{{events}}"></event-calendar>
    </div>
   </template>
 
   <script>
     Polymer({
-      is: 'my-view3'
+      is: 'my-view3',
+      properties:{
+        events: {
+              type: Array,
+              notify: true,
+              value: []
+         },
+      }
+     
     });
   </script>
 </dom-module>

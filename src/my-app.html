@@ -121,14 +121,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             database-url="https://weeklyplan.firebaseio.com">
         </firebase-app>
 
+         <firebase-query
+          id="eventsQuery"
+          app-name="weeklyplan"
+          path="/events"
+          data="{{events}}">
+          </firebase-query>
+
         <iron-pages
             selected="[[page]]"
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
           <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
+          <my-view2 name="view2" events="{{events}}"></my-view2>
+          <my-view3 name="view3" events="{{events}}"></my-view3>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -144,7 +151,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged'
-        }
+        },
+
+        events: {
+              type: Array,
+              notify: true,
+              value: []
+          },
       },
 
       observers: [

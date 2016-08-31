@@ -22,13 +22,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
      <div class="card">
-      <event-list> </event-list>
+       <div on-tap="tap">asd</div>
+      <event-list events="{{events}}"> </event-list>
     </div>
   </template>
 
   <script>
     Polymer({
-      is: 'my-view2'
+      is: 'my-view2',
+
+      properties:{
+          events: {
+              type: Array,
+              notify: true,
+              value: []
+          },
+      },
+
+      tap: function(){
+        console.log(this.events);
+      }
     });
   </script>
 </dom-module>

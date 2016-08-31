@@ -31,12 +31,12 @@
       </firebase-auth>
 
       
-      <firebase-query
+      <!--<firebase-query
           id="query"
           app-name="weeklyplan"
           path="/events"
           data="{{events}}">
-      </firebase-query>
+      </firebase-query>-->
 
       <paper-button on-tap="tap">push me</paper-button>
       <paper-button on-tap="login">log me in</paper-button>
@@ -78,6 +78,7 @@
           type: Array,
           notify: true,
           value: [],
+          reflectToAttribute: true,
           observer: 'dataChanged'
         },
 
