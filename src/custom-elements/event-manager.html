@@ -12,6 +12,8 @@
       }
     </style>
 
+  <app-messages id="messages"></app-messages>
+
     <div>
         <h1>EVENT MANAGER</h1>
         <paper-input label="Title" id="title"></paper-input>
@@ -20,6 +22,8 @@
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
        <paper-button raised on-tap="addEvent">+</paper-button>
     </div>
+
+  
   </template>
 
   <script>
@@ -64,6 +68,7 @@
 
           db.ref().child('events').push(event);
           this.clearEvent();
+          this.$.messages.modal("Event added","ok");
 
       },
 

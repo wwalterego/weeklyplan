@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 
+
 <dom-module id="app-messages">
   <template>
     <style include="shared-styles">
@@ -12,12 +13,7 @@
 
         padding: 10px;
       }
-
-      .info{color: blue;}
-      .ok{color: green;}
-      .error{color:red;}
-      .warning{color:yellow;}
-
+      
 
        paper-dialog.ok {
             border: 2px solid;
@@ -48,9 +44,9 @@
         }
     </style>
 
-      <paper-dialog class="error" id="dialog">
+      <paper-dialog id="dialog">
         <div id="message"></div>
-        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button id="closeBtn" dialog-dismiss>Cancel</paper-button>
      </paper-dialog>
 
     </template>
@@ -60,35 +56,21 @@
       is: 'app-messages',
 
       properties: {
-        message: { type: String,value: ""},
-        type: {type: String, value: "info"}
+        message: {type: String,value: ""}
       },
 
-      createModal: function(message, type){
-
-          this.type = type;//this.getColor(type);
-
+      modal: function(message, type){
           this.$.message.innerHTML = message;
+          this.$.dialog.className = type;  
           this.$.dialog.open();
-      },
 
-      getColor: function(type){
-          switch(type){
-            case "info":
-                return "blue";
-                break;
-            case "ok":
-                return "green";
-                break;
-            case "error":
-                return "red";
-                break;
-            case "warning":
-                return "yellow";
-                break;
-            default:
-                return "blue";
-                break;
+          if(type != "error"){
+
+            this.$.closeBtn.hidden = true;
+               
+            setTimeout(function(){
+                        this.$.dialog.close();
+                    }.bind(this), 2000);
           }
       }
     });

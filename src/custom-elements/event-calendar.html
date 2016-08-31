@@ -168,7 +168,7 @@
       },
 
       tap:function(){
-        this.$.messages.createModal("prova", "info");
+        this.$.messages.modal("provaz", "info");
       },
 
       getEnd: function(item){
@@ -268,7 +268,7 @@
             if(!isOverlapped){
               firebase.database().ref().child('weekEvents').push(data);
             } else {
-             this.$.messages.createModal("Eventi sovrapposti", "error");
+             this.$.messages.modal("Eventi sovrapposti", "error");
             }
 
         }.bind(this)); 
