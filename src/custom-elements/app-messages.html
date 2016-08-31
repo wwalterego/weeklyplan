@@ -1,0 +1,96 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+
+<dom-module id="app-messages">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      .info{color: blue;}
+      .ok{color: green;}
+      .error{color:red;}
+      .warning{color:yellow;}
+
+
+       paper-dialog.ok {
+            border: 2px solid;
+            border-color: var(--paper-green-500);
+            background-color: var(--paper-light-green-50);
+            color: var(--paper-green-500);
+        }
+
+         paper-dialog.info {
+            border: 2px solid;
+            border-color: var(--paper-blue-500);
+            background-color: var(--paper-light-blue-50);
+            color: var(--paper-blue-500);
+        }
+
+         paper-dialog.warning {
+            border: 2px solid;
+            border-color: var(--paper-orange-500);
+            background-color: var(--paper-yellow-700);
+            color: var(--paper-orange-500);
+        }
+
+         paper-dialog.error {
+            border: 2px solid;
+            border-color: var(--paper-red-500);
+            background-color: var(--paper-red-50);
+            color: var(--paper-red-500);
+        }
+    </style>
+
+      <paper-dialog class="error" id="dialog">
+        <div id="message"></div>
+        <paper-button dialog-dismiss>Cancel</paper-button>
+     </paper-dialog>
+
+    </template>
+
+  <script>
+    Polymer({
+      is: 'app-messages',
+
+      properties: {
+        message: { type: String,value: ""},
+        type: {type: String, value: "info"}
+      },
+
+      createModal: function(message, type){
+
+          this.type = type;//this.getColor(type);
+
+          this.$.message.innerHTML = message;
+          this.$.dialog.open();
+      },
+
+      getColor: function(type){
+          switch(type){
+            case "info":
+                return "blue";
+                break;
+            case "ok":
+                return "green";
+                break;
+            case "error":
+                return "red";
+                break;
+            case "warning":
+                return "yellow";
+                break;
+            default:
+                return "blue";
+                break;
+          }
+      }
+    });
+  </script>
+</dom-module>

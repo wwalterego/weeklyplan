@@ -49,6 +49,8 @@
           data="{{weekEvents}}">
 </firebase-query>
 
+<app-messages id="messages"></app-messages>
+
 
 <paper-radio-group aria-labelledby="label2" selected="{{showMode}}">
   <paper-radio-button name="today">Show Today</paper-radio-button>
@@ -82,6 +84,7 @@
   </paper-listbox>
 </paper-dropdown-menu>  
 <paper-button on-tap="addEventToWeek">Add</paper-button>
+<paper-button on-tap="tap">asd</paper-button>
 <div>
 
 <template is="dom-if" if="[[isWeekVisible('A')]]">
@@ -165,7 +168,7 @@
       },
 
       tap:function(){
-        console.log(this.showMode);
+        this.$.messages.createModal("prova", "info");
       },
 
       getEnd: function(item){
@@ -239,8 +242,8 @@
         firebase.database().ref('/weekEvents/').once('value').then(function(snapshot) {
             var weekEvents = snapshot.val();
             var isOverlapped = false;
-            var start2 = Number(this.start);
-            var end2 = Number(this.start) + Number(this.duration);
+            var start2 = Number(data.start);
+            var end2 = Number(data.start) + Number(data.duration);
             
             for(var index in weekEvents){
               
@@ -256,6 +259,7 @@
                 isOverlapped = true;
                 break;
               } else if(start2 > start1 && start2 < end1){
+                console.log('s1 > s1 e s2 < e1');
                 isOverlapped = true;
                 break;
               }
@@ -264,11 +268,10 @@
             if(!isOverlapped){
               firebase.database().ref().child('weekEvents').push(data);
             } else {
-              alert('Sovrapposizione di eventi');
+             this.$.messages.createModal("Eventi sovrapposti", "error");
             }
-            
 
-        }.bind(data)); 
+        }.bind(this)); 
       
 
       },
