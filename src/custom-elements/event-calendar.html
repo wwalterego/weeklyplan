@@ -239,7 +239,7 @@
       //   day: "Tuesday"
       // }
 
-        firebase.database().ref('/weekEvents/').once('value').then(function(snapshot) {
+        fb.database().ref('/weekEvents/').once('value').then(function(snapshot) {
             var weekEvents = snapshot.val();
             var isOverlapped = false;
             var start2 = Number(data.start);
@@ -247,26 +247,28 @@
             
             for(var index in weekEvents){
               
-              var start1 = Number(weekEvents[index].start);
-              var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
-              
-              if(end2 > start1 && end2 < end1){
-                console.log('e2 > s1 e e2 < e1');
-                isOverlapped = true;
-                break;
-              } else if(start2 < start1 && end2 > end1){
-                console.log('s2 < s1 e e2 > e1')
-                isOverlapped = true;
-                break;
-              } else if(start2 > start1 && start2 < end1){
-                console.log('s1 > s1 e s2 < e1');
-                isOverlapped = true;
-                break;
+              if(weekEvents[index].day == data.day){
+                var start1 = Number(weekEvents[index].start);
+                var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
+                
+                if(end2 > start1 && end2 < end1){
+                  console.log('e2 > s1 e e2 < e1');
+                  isOverlapped = true;
+                  break;
+                } else if(start2 < start1 && end2 > end1){
+                  console.log('s2 < s1 e e2 > e1')
+                  isOverlapped = true;
+                  break;
+                } else if(start2 > start1 && start2 < end1){
+                  console.log('s1 > s1 e s2 < e1');
+                  isOverlapped = true;
+                  break;
+                }
               }
             }
 
             if(!isOverlapped){
-              firebase.database().ref().child('weekEvents').push(data);
+              fb.database().ref().child('weekEvents').push(data);
             } else {
              this.$.messages.modal("Eventi sovrapposti", "error");
             }
@@ -297,7 +299,7 @@
 
       removeEvent: function(e){
         
-          firebase.database().ref().child('/weekEvents/' + e.model.event.$key).remove();
+          fb.database().ref().child('/weekEvents/' + e.model.event.$key).remove();
       }
      
     });

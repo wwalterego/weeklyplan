@@ -107,7 +107,7 @@
 
       removeEvent: function(e){
         
-          firebase.database().ref().child('/events/' + e.model.event.$key).remove();
+          fb.database().ref().child('/events/' + e.model.event.$key).remove();
       },
 
       openEdit: function(e){
@@ -134,7 +134,7 @@
           abbreviation: this.$.abbreviation.value 
         }
 
-        firebase.database().ref().child('events/' + this.keyToUpdate + '/').update(event);
+        fb.database().ref().child('events/' + this.keyToUpdate + '/').update(event);
 
       }
     });

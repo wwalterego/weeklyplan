@@ -32,13 +32,13 @@
 
       addEvent: function(){
         
-          var db = firebase.database();
+          var db = fb.database();
 
           var email = 'walter.miani@gmail.com';
           var password = 'walter.miani@gmail.com';
 
 
-          firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+          fb.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
