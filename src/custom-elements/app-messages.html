@@ -42,11 +42,17 @@
             background-color: var(--paper-red-50);
             color: var(--paper-red-500);
         }
+
+        #closeBtn{
+            /*position: absolute;
+            top: 3px;
+            right: 3px;*/
+        }
     </style>
 
       <paper-dialog id="dialog">
         <div id="message"></div>
-        <paper-button id="closeBtn" dialog-dismiss>Cancel</paper-button>
+        <paper-button id="closeBtn" dialog-dismiss>CLOSE</paper-button>
      </paper-dialog>
 
     </template>
@@ -66,7 +72,7 @@
 
           if(type != "error"){
 
-            this.$.closeBtn.hidden = true;
+            this.$.closeBtn.style.visibility = "hidden";
                
             setTimeout(function(){
                         this.$.dialog.close();
