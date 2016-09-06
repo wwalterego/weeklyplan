@@ -26,8 +26,10 @@
         <paper-button id="btnSignup" on-tap="signup">Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout">Log Out</paper-button>
         <paper-button id="btnLogout" on-tap="login2">prova login</paper-button>
+        <paper-button id="btnLogout" on-tap="writeData" hidden>write data</paper-button>
         <paper-button id="btnLogout" on-tap="googleLogin" hidden>google login</paper-button>
         <div id="userEmail">{{user.email}}</div>
+        <div id="userUid">{{user.uid}}</div>
 
     </template>
 
@@ -74,6 +76,10 @@
       googleLogin: function(){
           this.$.auth.signInWithPopup("google");
       },
+
+      writeData: function(){
+          alert('feature di prova da sviluppare');
+      }
 
       handleError: function(e){
           console.log(e);
