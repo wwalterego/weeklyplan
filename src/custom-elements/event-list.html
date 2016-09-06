@@ -27,8 +27,8 @@
         data="{{events}}">
     </firebase-document>-->
 
-      <firebase-auth id="auth" app-name="weeklyplan" on-error="handleError">
-      </firebase-auth>
+      <!--<firebase-auth id="auth" app-name="weeklyplan" on-error="handleError">
+      </firebase-auth>-->
 
       
       <!--<firebase-query
@@ -37,11 +37,6 @@
           path="/events"
           data="{{events}}">
       </firebase-query>-->
-
-      <paper-button on-tap="tap">push me</paper-button>
-      <paper-button on-tap="login">log me in</paper-button>
-      <paper-button on-tap="logout">log me out</paper-button>
-
 
       <div>
       <template is="dom-repeat" items="[[events]]" as="event">

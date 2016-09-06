@@ -22,7 +22,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
      <div class="card">
-       <div on-tap="tap">asd</div>
       <event-list events="{{events}}"> </event-list>
     </div>
   </template>
@@ -37,10 +36,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               notify: true,
               value: []
           },
-      },
-
-      tap: function(){
-        console.log(this.events);
       }
     });
   </script>

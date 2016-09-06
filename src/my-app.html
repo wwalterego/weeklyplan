@@ -28,6 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./custom-elements/event-list.html">
 <link rel="import" href="./custom-elements/event-calendar.html">
 <link rel="import" href="./custom-elements/app-messages.html">
+<link rel="import" href="./custom-elements/app-auth.html">
 
 
 <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
@@ -98,6 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="view4" href="/view4">Auth</a>
           <a name="view1" href="/view1">Add Event</a>
           <a name="view2" href="/view2">Events List</a>
           <a name="view3" href="/view3">Calendar View</a>
@@ -133,6 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
+          <my-view4 name="view4"></my-view4>
           <my-view1 name="view1"></my-view1>
           <my-view2 name="view2" events="{{events}}"></my-view2>
           <my-view3 name="view3" events="{{events}}"></my-view3>
