@@ -251,7 +251,7 @@
                 var start1 = Number(weekEvents[index].start);
                 var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
                 
-                if(end2 > start1 && end2 < end1){
+                if(end2 > start1 && end2 <= end1){
                   console.log('e2 > s1 e e2 < e1');
                   isOverlapped = true;
                   break;
@@ -259,7 +259,7 @@
                   console.log('s2 < s1 e e2 > e1')
                   isOverlapped = true;
                   break;
-                } else if(start2 > start1 && start2 < end1){
+                } else if(start2 >= start1 && start2 < end1){
                   console.log('s1 > s1 e s2 < e1');
                   isOverlapped = true;
                   break;
@@ -270,7 +270,7 @@
             if(!isOverlapped){
               fb.database().ref().child('weekEvents').push(data);
             } else {
-             this.$.messages.modal("Eventi sovrapposti", "error");
+             this.$.messages.modal("Overlapped events", "error");
             }
 
         }.bind(this)); 

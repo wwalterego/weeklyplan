@@ -18,7 +18,8 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.7",
     "iron-elements": "PolymerElements/iron-elements#^1.0.10",
     "polymerfire": "firebase/polymerfire#^0.9.5",
-    "moment": "^2.14.1"
+    "moment": "^2.14.1",
+    "neon-animation": "PolymerElements/neon-animation#^1.2.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
