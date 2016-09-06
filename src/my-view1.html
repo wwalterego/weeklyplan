@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <event-manager> </event-manager>
+      <event-manager user="{{user}}"> </event-manager>
     </div>
   </template>
 
@@ -36,6 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               value: [],
               reflectToAttribute: true
           },
+      user:{type:Object,notify: true}
     });
   </script>
 </dom-module>

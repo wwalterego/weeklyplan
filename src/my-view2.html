@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
      <div class="card">
-      <event-list events="{{events}}"> </event-list>
+      <event-list events="{{events}}" user="{{user}}"> </event-list>
     </div>
   </template>
 
@@ -36,6 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               notify: true,
               value: []
           },
+          user:{type:Object,notify: true}
       }
     });
   </script>

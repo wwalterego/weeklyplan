@@ -87,6 +87,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+   
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -135,9 +137,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-view4 name="view4"></my-view4>
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2" events="{{events}}"></my-view2>
+          <my-view4 name="view4" user={{user}}></my-view4>
+          <my-view1 name="view1" user="{{user}}"></my-view1>
+          <my-view2 name="view2" events="{{events}}" user="{{user}}"></my-view2>
           <my-view3 name="view3" events="{{events}}"></my-view3>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
@@ -156,11 +158,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_pageChanged'
         },
 
-        events: {
-              type: Array,
-              notify: true,
-              value: []
-          },
+        events: {type: Array,notify: true,value: []},
+        user:{type:Object,notify: true}
       },
 
       observers: [

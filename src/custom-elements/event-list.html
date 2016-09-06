@@ -31,23 +31,23 @@
       </firebase-auth>-->
 
       
-      <!--<firebase-query
+      <firebase-query
           id="query"
           app-name="weeklyplan"
-          path="/events"
+          path="/events/{{user.uid}}"
           data="{{events}}">
-      </firebase-query>-->
+      </firebase-query>
 
       <div>
-      <template is="dom-repeat" items="[[events]]" as="event">
-        <div class="eventContainer">
-            <div><span>[[event.title]]<span>
-              <paper-button raised on-tap="removeEvent">X</paper-button>
-              <paper-button raised on-tap="openEdit">Edit</paper-button>
+        <template is="dom-repeat" items="[[events]]" as="event">
+          <div class="eventContainer">
+              <div><span>[[event.title]]<span>
+                <paper-button raised on-tap="removeEvent">X</paper-button>
+                <paper-button raised on-tap="openEdit">Edit</paper-button>
+            </div>
           </div>
-        </div>
-      </template>
-       </div>
+        </template>
+      </div>
 
 
       <paper-dialog id="dialog">
@@ -76,28 +76,17 @@
           reflectToAttribute: true,
           observer: 'dataChanged'
         },
+        user:{type:Object,notify: true},
 
         keyToUpdate: {type: String}
       },
 
       dataChanged: function(newData, oldData){
-        console.log('data has changed');
+        //console.log('data has changed');
       },
 
       tap: function(){
-        console.log(this.$.query.data);
-      },
-
-      login: function(){
-
-        var email = "walter.miani@gmail.com";
-        var password = "walter.miani@gmail.com"
-        this.$.auth.signInWithEmailAndPassword(email, password);
-        
-      },
-
-      logout: function(){
-      this.$.auth.signOut();
+        console.log(this.user);
       },
 
       removeEvent: function(e){

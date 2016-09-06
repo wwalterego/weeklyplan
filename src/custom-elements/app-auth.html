@@ -20,16 +20,16 @@
         </firebase-auth>
 
 
-        <paper-input id="email"></paper-input>
-        <paper-input id="password"></paper-input>
+        <paper-input id="email" label="email"></paper-input>
+        <paper-input id="password" label="password"></paper-input>
         <paper-button id="btnLogin" on-tap="login">Log in</paper-button>
         <paper-button id="btnSignup" on-tap="signup">Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout">Log Out</paper-button>
         <paper-button id="btnLogout" on-tap="login2">prova login</paper-button>
-        <paper-button id="btnLogout" on-tap="writeData" hidden>write data</paper-button>
+        <paper-button id="btnLogout" on-tap="writeData">write data</paper-button>
         <paper-button id="btnLogout" on-tap="googleLogin" hidden>google login</paper-button>
         <div id="userEmail">{{user.email}}</div>
-        <div id="userUid">{{user.uid}}</div>
+        <div id="userUid" hidden>{{user.uid}}</div>
 
     </template>
 
@@ -40,7 +40,7 @@
       properties: {
         email: {type: String},
         password: {type: String},
-        user: {type: Object, observer: '_userChangeHandler'}
+        user: {type: Object,notify:true, observer: '_userChangeHandler'}
       },
 
       login: function(){
@@ -78,8 +78,12 @@
       },
 
       writeData: function(){
-          alert('feature di prova da sviluppare');
-      }
+          
+          fb.database().ref().child('users/' + this.user.uid).push({nome: "prova"});
+
+          fb.database().ref().child('users/altro').push({nome: "prova"});
+
+      },
 
       handleError: function(e){
           console.log(e);

@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
   <div class="card">
-      <app-auth></app-auth>
+      <app-auth user={{user}}></app-auth>
    </div>
   </template>
 
@@ -31,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'my-view4',
       properties:{
-      
+        user: {type: Object,notify: true,value: {}},
       }
      
     });

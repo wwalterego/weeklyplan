@@ -20,7 +20,7 @@
         <paper-input label="Description" id="description"></paper-input>
         <paper-input label="Duration" id="duration"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
-       <paper-button raised on-tap="addEvent">+</paper-button>
+        <paper-button raised on-tap="addEvent">+</paper-button>
     </div>
 
   
@@ -30,43 +30,27 @@
     Polymer({
       is: 'event-manager',
 
+      properties:{
+        user:{type:Object,notify:true}
+      },
+
       addEvent: function(){
         
           var db = fb.database();
-
-          var email = 'walter.miani@gmail.com';
-          var password = 'walter.miani@gmail.com';
-
-
-          fb.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-
-            console.log(errorCode);
-            console.log(errorMessage);
-            // ...
-          });
-
 
           var title = this.$.title.value;
           var description = this.$.description.value;
           var abbreviation = this.$.abbreviation.value;
           var duration = this.$.duration.value;
-
-          // db.ref('events/' + title + '/').set({
-          //   description: description,
-          //   abbreviation: abbreviation,
-          //   duration: duration
-          // });
+          
           var event = {
             title: title,
             description: description,
             abbreviation: abbreviation,
             duration: duration
-          }
+          };
 
-          db.ref().child('events').push(event);
+          db.ref().child('events/' + this.user.userUid).push(event);
           this.clearEvent();
           this.$.messages.modal("Event added","ok");
 
