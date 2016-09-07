@@ -9,10 +9,10 @@
     </style>
 
      <div class="card">
-      <event-list events="{{events}}"> </event-list>
+      <event-list events="{{events}}" user="{{user}}"> </event-list>
     </div>
   </template>
 
-  <script>Polymer({is:"my-view2",properties:{events:{type:Array,notify:!0,value:[]}}});</script>
+  <script>Polymer({is:"my-view2",properties:{events:{type:Array,notify:!0,value:[]},user:{type:Object,notify:!0}}});</script>
 </dom-module>
 </body></html>

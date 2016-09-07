@@ -25,9 +25,6 @@
           path="events/{{user.uid}}"
           data="{{events}}">
       </firebase-query>
-
-      <div on-tap="tap">tap</div>
-
       <div>
         <template is="dom-repeat" items="[[events]]" as="event">
           <div class="eventContainer">
@@ -74,11 +71,7 @@
       dataChanged: function(newData, oldData){
         //console.log('data has changed');
       },
-
-      tap: function(){
-        console.log('user: ' + this.user.uid);
-        console.log('firebase: ' + fb.auth().currentUser.uid);
-      },
+      
 
       removeEvent: function(e){
         

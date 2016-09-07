@@ -25,10 +25,10 @@
         <paper-button id="btnLogin" on-tap="login">Log in</paper-button>
         <paper-button id="btnSignup" on-tap="signup">Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout">Log Out</paper-button>
-        <paper-button id="btnLogout" on-tap="login2">Admin</paper-button>
-         <paper-button id="btnLogout" on-tap="login3">prova</paper-button>
-        <paper-button id="btnLogout" on-tap="googleLogin" hidden>google login</paper-button>
-        <div id="userEmail">{{user.email}}</div>
+        <paper-button  on-tap="login2" hidden>Admin</paper-button>
+         <paper-button on-tap="login3" hidden>prova</paper-button>
+        <paper-button  on-tap="googleLogin" hidden>google login</paper-button>
+        <div id="userEmail">Connected user: {{user.email}}</div>
         <div id="userUid" hidden>{{user.uid}}</div>
 
     </template>
