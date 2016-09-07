@@ -44,20 +44,19 @@
       },
 
       login: function(){
-          console.log('log in');
-
           var email = this.$.email.value;
           var password = this.$.password.value;
           
           this.$.auth.signInWithEmailAndPassword(email, password);
+          console.log('log in');
+
       },
 
       signup: function(){
-          console.log('SIGN up');
-          
           var email = this.$.email.value;
           var password = this.$.password.value;
           this.$.auth.createUserWithEmailAndPassword(email, password);
+          console.log('SIGN up');
       },
 
       logout: function(){
