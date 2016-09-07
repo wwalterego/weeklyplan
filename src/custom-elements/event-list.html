@@ -18,25 +18,15 @@
         padding: 10px;
       }
     </style>
-
-
-    <!--<firebase-document
-        id="document"
-        app-name="weeklyplan"
-        path="/asdasd"
-        data="{{events}}">
-    </firebase-document>-->
-
-      <!--<firebase-auth id="auth" app-name="weeklyplan" on-error="handleError">
-      </firebase-auth>-->
-
       
       <firebase-query
           id="query"
           app-name="weeklyplan"
-          path="/events/{{user.uid}}"
+          path="events/{{user.uid}}"
           data="{{events}}">
       </firebase-query>
+
+      <div on-tap="tap">tap</div>
 
       <div>
         <template is="dom-repeat" items="[[events]]" as="event">
@@ -86,12 +76,13 @@
       },
 
       tap: function(){
-        console.log(this.user);
+        console.log('user: ' + this.user.uid);
+        console.log('firebase: ' + fb.auth().currentUser.uid);
       },
 
       removeEvent: function(e){
         
-          fb.database().ref().child('/events/' + e.model.event.$key).remove();
+          fb.database().ref().child('/events/' + this.user.uid + '/' + e.model.event.$key).remove();
       },
 
       openEdit: function(e){
@@ -113,12 +104,12 @@
         
         var event = {
           title: this.$.title.value,
-          desription: this.$.description.value,
+          description: this.$.description.value,
           duration: this.$.duration.value,
           abbreviation: this.$.abbreviation.value 
         }
 
-        fb.database().ref().child('events/' + this.keyToUpdate + '/').update(event);
+        fb.database().ref().child('events/' + this.user.uid + '/' + this.keyToUpdate + '/').update(event);
 
       }
     });

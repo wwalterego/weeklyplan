@@ -45,7 +45,7 @@
 <firebase-query
           id="weekEventsQuery"
           app-name="weeklyplan"
-          path="/weekEvents"
+          path="/weekEvents/{{user.uid}}"
           data="{{weekEvents}}">
 </firebase-query>
 
@@ -155,6 +155,8 @@
               value: []
           },
 
+          user:{type:Object,notify: true},
+
           weekEvents: {
               type: Array,
               notify: true,
@@ -239,7 +241,7 @@
       //   day: "Tuesday"
       // }
 
-        fb.database().ref('/weekEvents/').once('value').then(function(snapshot) {
+        fb.database().ref('/weekEvents/' + this.user.uid + '/').once('value').then(function(snapshot) {
             var weekEvents = snapshot.val();
             var isOverlapped = false;
             var start2 = Number(data.start);
@@ -268,7 +270,7 @@
             }
 
             if(!isOverlapped){
-              fb.database().ref().child('weekEvents').push(data);
+              fb.database().ref().child('weekEvents/' + this.user.uid).push(data);
             } else {
              this.$.messages.modal("Overlapped events", "error");
             }
@@ -299,7 +301,7 @@
 
       removeEvent: function(e){
         
-          fb.database().ref().child('/weekEvents/' + e.model.event.$key).remove();
+          fb.database().ref().child('/weekEvents/' + this.user.uid + '/' + e.model.event.$key).remove();
       }
      
     });

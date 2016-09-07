@@ -25,8 +25,8 @@
         <paper-button id="btnLogin" on-tap="login">Log in</paper-button>
         <paper-button id="btnSignup" on-tap="signup">Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout">Log Out</paper-button>
-        <paper-button id="btnLogout" on-tap="login2">prova login</paper-button>
-        <paper-button id="btnLogout" on-tap="writeData">write data</paper-button>
+        <paper-button id="btnLogout" on-tap="login2">Admin</paper-button>
+         <paper-button id="btnLogout" on-tap="login3">prova</paper-button>
         <paper-button id="btnLogout" on-tap="googleLogin" hidden>google login</paper-button>
         <div id="userEmail">{{user.email}}</div>
         <div id="userUid" hidden>{{user.uid}}</div>
@@ -73,16 +73,12 @@
           this.$.auth.signInWithEmailAndPassword("walter.miani@gmail.com", "walter.miani@gmail.com");
       },
 
-      googleLogin: function(){
-          this.$.auth.signInWithPopup("google");
+       login3: function(){
+          this.$.auth.signInWithEmailAndPassword("prova.prova@prova.com", "prova1");
       },
 
-      writeData: function(){
-          
-          fb.database().ref().child('users/' + this.user.uid).push({nome: "prova"});
-
-          fb.database().ref().child('users/altro').push({nome: "prova"});
-
+      googleLogin: function(){
+          this.$.auth.signInWithPopup("google");
       },
 
       handleError: function(e){

@@ -49,8 +49,8 @@
             abbreviation: abbreviation,
             duration: duration
           };
-
-          db.ref().child('events/' + this.user.userUid).push(event);
+          
+          db.ref().child('events/' + this.user.uid + '/').push(event);
           this.clearEvent();
           this.$.messages.modal("Event added","ok");
 
