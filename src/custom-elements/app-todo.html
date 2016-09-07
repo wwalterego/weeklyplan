@@ -1,0 +1,108 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+
+
+
+<dom-module id="app-todo">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      .done {
+          text-decoration: line-through;
+      }
+      
+    </style>
+
+    <firebase-query
+          id="query"
+          app-name="weeklyplan"
+          path="todos"
+          data="{{todos}}">
+      </firebase-query>
+
+      <paper-radio-group aria-labelledby="label2" selected="{{showMode}}">
+        <paper-radio-button name="all">Show All</paper-radio-button>
+        <paper-radio-button name="user">Show User's</paper-radio-button>
+      </paper-radio-group>
+
+
+      <paper-input id="text" label="insert new todo/bug"></paper-input>
+      <paper-button on-tap="addTodo">ADD</paper-button>
+
+      <template is="dom-repeat" items="[[todos]]" as="todo">
+          <div hidden$="{{computeShowMode(todo, showMode)}}">
+            <div>
+                <span class$="[[todo.done]]">[[todo.text]]</span>
+                <paper-button on-tap="doTodo">OK</paper-button>
+                <paper-button on-tap="removeTodo">X</paper-button>
+            </div>
+            <div>Inserted by: [[todo.user]]</div>
+            <div style="border-bottom: 2px solid grey">On date: [[todo.date]]</div>
+          </div>
+      </template>
+
+    </template>
+
+  <script>
+    Polymer({
+      is: 'app-todo',
+
+      properties: {
+        user: {type: Object,notify:true, observer: '_userChangeHandler'},
+        todos: {type: Object},
+        showMode: { type: Object,value: "all" }
+      },
+
+      addTodo: function(){
+          var text = this.$.text.value;
+          var user = fb.auth().currentUser.email;
+          
+          var todo = {
+              text: text,
+              user: user,
+              date: moment().format('LL'),
+              done: 'not'
+          }
+
+          fb.database().ref().child('todos').push(todo);
+          this.$.text.value = "";
+      },
+
+      doTodo: function(e){
+
+          var keyToUpdate = e.model.todo.$key;
+          var todo = {
+              text : e.model.todo.text,
+              date : e.model.todo.date,
+              user : e.model.todo.user,
+              done : "done"
+          };
+          
+          fb.database().ref().child('todos/' + keyToUpdate + '/').update(todo);
+      },
+
+      removeTodo: function(e){
+          var keyToUpdate = e.model.todo.$key;
+          fb.database().ref().child('todos/' + keyToUpdate).remove();
+      },
+
+      computeShowMode: function(todo, showMode){
+
+        if(showMode == "all")
+        return false;
+        else
+        return todo.user != fb.auth().currentUser.email;
+      },
+
+      
+    });
+  </script>
+</dom-module>

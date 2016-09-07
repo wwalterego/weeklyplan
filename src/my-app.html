@@ -29,6 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./custom-elements/event-calendar.html">
 <link rel="import" href="./custom-elements/app-messages.html">
 <link rel="import" href="./custom-elements/app-auth.html">
+<link rel="import" href="./custom-elements/app-todo.html">
 
 
 <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
@@ -105,6 +106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a name="view1" href="/view1">Add Event</a>
           <a name="view2" href="/view2">Events List</a>
           <a name="view3" href="/view3">Calendar View</a>
+          <a name="view5" href="/view5">TODO</a>
         </iron-selector>
       </app-drawer>
 
@@ -141,6 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <my-view1 name="view1" user="{{user}}"></my-view1> <!--manager -->
           <my-view2 name="view2" events="{{events}}" user="{{user}}"></my-view2> <!-- list -->
           <my-view3 name="view3" events="{{events}}" user="{{user}}"></my-view3> <!-- calendar -->
+          <my-view5 name="view5"></my-view5> <!-- calendar -->
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
