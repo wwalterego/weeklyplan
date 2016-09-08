@@ -16,13 +16,15 @@
 
     <div>
         <h1>EVENT MANAGER</h1>
-        <paper-input label="Title" id="title"></paper-input>
+        <paper-input label="Title" id="title" required auto-validate error-message="Required field" invalid="{{invalidValues.title}}"></paper-input>
         <paper-input label="Description" id="description"></paper-input>
-        <paper-input label="Duration" id="duration"></paper-input>
+        <paper-input label="Duration" id="duration" invalid="{{invalidValues.duration}}" required auto-validate allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
-        <paper-button raised on-tap="addEvent">+</paper-button>
+        <paper-button raised on-tap="addEvent" disabled="{{addDisabled}}">+</paper-button>
     </div>
 
+
+    <div on-tap="tap">tap</div>
   
   </template>
 
@@ -31,8 +33,15 @@
       is: 'event-manager',
 
       properties:{
-        user:{type:Object,notify:true}
+        user:{type:Object,notify:true},
+        invalidValues:{type: Array, value:[],notify:true},
+        addDisabled:{type: Boolean, value: false}
       },
+
+       observers: [
+         '_invalidValuesChanged(invalidValues.*)'
+        ],
+       
 
       addEvent: function(){
         
@@ -61,7 +70,19 @@
           this.$.description.value = "";
           this.$.abbreviation.value = "";
           this.$.duration.value = "";
-      }
+      },
+
+       _invalidValuesChanged : function(values) {
+
+         this.addDisabled = false;
+         
+         for(index in this.invalidValues){  	
+           if(this.invalidValues[index]){
+             console.log('xe un true');
+              this.addDisabled = true;
+           }
+         }
+        }
     });
   </script>
 </dom-module>
