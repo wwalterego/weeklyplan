@@ -38,10 +38,9 @@
         addDisabled:{type: Boolean, value: false}
       },
 
-       observers: [
-         '_invalidValuesChanged(invalidValues.*)'
-        ],
-       
+      observers: [
+        '_invalidValuesChanged(invalidValues.*)'
+      ],
 
       addEvent: function(){
         
@@ -73,12 +72,9 @@
       },
 
        _invalidValuesChanged : function(values) {
-
          this.addDisabled = false;
-         
          for(index in this.invalidValues){  	
            if(this.invalidValues[index]){
-             console.log('xe un true');
               this.addDisabled = true;
            }
          }
