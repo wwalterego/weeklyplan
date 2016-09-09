@@ -16,16 +16,16 @@
       
     </style>
 
-        <firebase-auth id="auth" user="{{user}}" on-error="handleError" status-Known="{{statusKnown}}">
+        <firebase-auth id="auth" user="{{user}}" on-error="handleError" status-Known="{{statusKnown}}" signed-In="{{signedIn}}">
         </firebase-auth>
         <app-messages id="messages"></app-messages>
 
 
         <paper-input required id="email" label="email"></paper-input>
         <paper-input required id="password" label="password" type="password"></paper-input>
-        <paper-button id="btnLogin" on-tap="login">Log in</paper-button>
-        <paper-button id="btnSignup" on-tap="signup">Sign Up</paper-button>
-        <paper-button id="btnLogout" on-tap="logout">Log Out</paper-button>
+        <paper-button id="btnLogin" on-tap="login" disabled={{signedIn}}>Log in</paper-button>
+        <paper-button id="btnSignup" on-tap="signup" disabled={{signedIn}}>Sign Up</paper-button>
+        <paper-button id="btnLogout" on-tap="logout" hidden$={{!signedIn}}>Log Out</paper-button>
         <paper-button  on-tap="googleLogin" hidden>google login</paper-button>
         <div id="userEmail">Logged user: {{user.email}}</div>
         <div id="userUid" hidden>{{user.uid}}</div>
