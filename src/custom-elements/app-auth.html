@@ -16,19 +16,18 @@
       
     </style>
 
-        <firebase-auth id="auth" user="{{user}}" on-error="handleError" statusKnown="{{statusKnown}}">
+        <firebase-auth id="auth" user="{{user}}" on-error="handleError" status-Known="{{statusKnown}}">
         </firebase-auth>
+        <app-messages id="messages"></app-messages>
 
 
-        <paper-input id="email" label="email"></paper-input>
-        <paper-input id="password" label="password" type="password"></paper-input>
+        <paper-input required id="email" label="email"></paper-input>
+        <paper-input required id="password" label="password" type="password"></paper-input>
         <paper-button id="btnLogin" on-tap="login">Log in</paper-button>
         <paper-button id="btnSignup" on-tap="signup">Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout">Log Out</paper-button>
-        <paper-button  on-tap="login2" hidden>Admin</paper-button>
-         <paper-button on-tap="login3" hidden>prova</paper-button>
         <paper-button  on-tap="googleLogin" hidden>google login</paper-button>
-        <div id="userEmail">Connected user: {{user.email}}</div>
+        <div id="userEmail">Logged user: {{user.email}}</div>
         <div id="userUid" hidden>{{user.uid}}</div>
 
     </template>
@@ -40,36 +39,49 @@
       properties: {
         email: {type: String},
         password: {type: String},
-        user: {type: Object,notify:true, observer: '_userChangeHandler'}
+        user: {type: Object,notify:true},
+        statusKnown: {type: Boolean, observer:'_statusKnowChangeHandler'}
       },
 
       login: function(){
           var email = this.$.email.value;
           var password = this.$.password.value;
           
-          this.$.auth.signInWithEmailAndPassword(email, password);
-          console.log('log in');
+
+          if(this.validator()){
+             this.$.auth.signInWithEmailAndPassword(email, password).then(function(){
+                this.$.messages.modal("Logged in","ok");
+             }.bind(this), function(error, data){
+                 this.$.messages.modal("Login failed! " + error, "error");
+             }.bind(this));
+             
+          } else{
+              this.$.messages.modal("Email and password required","error");
+          }
 
       },
 
       signup: function(){
           var email = this.$.email.value;
           var password = this.$.password.value;
-          this.$.auth.createUserWithEmailAndPassword(email, password);
-          console.log('SIGN up');
+
+          if(this.validator()){
+             this.$.auth.createUserWithEmailAndPassword(email, password).then(function(){
+                this.$.messages.modal("New user created","ok");
+             }.bind(this), function(){
+                 this.$.messages.modal("Error creating the new user","error");
+             }.bind(this));
+             
+          } else{
+              this.$.messages.modal("Email and password required","error");
+          }
+          
       },
 
       logout: function(){
-          console.log('log out');
+          
           this.$.auth.signOut();
-      },
-
-      login2: function(){
-          this.$.auth.signInWithEmailAndPassword("walter.miani@gmail.com", "walter.miani@gmail.com");
-      },
-
-       login3: function(){
-          this.$.auth.signInWithEmailAndPassword("prova.prova@prova.com", "prova1");
+          this.$.userEmail.innerHTML = "Not logged in";
       },
 
       googleLogin: function(){
@@ -79,14 +91,26 @@
       handleError: function(e){
           console.log(e);
       },
+      
 
-      _userChangeHandler: function(user){
-          if(user){
-            if(user.email == "walter.miani@gmail.com"){
-               this.$.userEmail.innerHTML = "Admin";
+      _statusKnowChangeHandler: function(status){
+           if(this.user.email){
+            if(this.user.email == "walter.miani@gmail.com"){
+               this.$.userEmail.innerHTML = "Logged user: Admin";
             }       
+          } else{
+               this.$.userEmail.innerHTML = "Not logged in";
           }
-      }
+      },
+
+      validator: function(){
+
+        var validations = [];
+        validations.push(this.$.email.validate());
+        validations.push(this.$.password.validate());
+        return validations.every(function(val,index){return val == true})
+
+      },
     });
   </script>
 </dom-module>

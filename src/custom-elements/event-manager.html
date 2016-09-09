@@ -16,11 +16,11 @@
 
     <div>
         <h1>EVENT MANAGER</h1>
-        <paper-input label="Title" id="title" required auto-validate error-message="Required field" invalid="{{invalidValues.title}}"></paper-input>
+        <paper-input label="Title" id="title"  required error-message="Required field"></paper-input>
         <paper-input label="Description" id="description"></paper-input>
-        <paper-input label="Duration" id="duration" invalid="{{invalidValues.duration}}" required auto-validate allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
+        <paper-input label="Duration" id="duration" required allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
-        <paper-button raised on-tap="addEvent" disabled="{{addDisabled}}">+</paper-button>
+        <paper-button raised on-tap="addEvent" disabled="{{this.$.title.invalid}}">+</paper-button>
     </div>
   
   </template>
@@ -38,6 +38,11 @@
       observers: [
         '_invalidValuesChanged(invalidValues.*)'
       ],
+      
+
+      valid: function(w){
+        console.log('validant0o');
+      },
 
       addEvent: function(){
         
@@ -55,9 +60,25 @@
             duration: duration
           };
           
-          db.ref().child('events/' + this.user.uid + '/').push(event);
-          this.clearEvent();
-          this.$.messages.modal("Event added","ok");
+          if(this.validator()){
+             db.ref().child('events/' + this.user.uid + '/').push(event).then(function(){
+                this.clearEvent();
+                this.$.messages.modal("Event added","ok");
+             }.bind(this), function(){
+                this.$.messages.modal("Error adding event","error");
+             });
+            
+          } else{
+              this.$.messages.modal("Some fields aren't correctly completed", "error");
+          }
+      },
+
+      validator: function(){
+
+        var validations = [];
+        validations.push(this.$.title.validate());
+        validations.push(this.$.duration.validate());
+        return validations.every(function(val,index){return val == true})
 
       },
 
