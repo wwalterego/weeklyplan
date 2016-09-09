@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
@@ -36,14 +37,15 @@
 
 
       <paper-textarea auto-resizing id="text" label="insert new todo/bug"></paper-textarea>
-      <paper-button on-tap="addTodo">ADD</paper-button>
-
+      <paper-button raised on-tap="addTodo">ADD</paper-button>
+      <div><h3>Todo List</h3></div>
       <template is="dom-repeat" items="[[todos]]" as="todo">
           <div hidden$="{{computeShowMode(todo, showMode)}}">
             <div>
                 <span class$="[[todo.done]]">[[todo.text]]</span>
-                <paper-button on-tap="doTodo">OK</paper-button>
-                <paper-button on-tap="removeTodo">X</paper-button>
+                <paper-icon-button icon="check" style="color:green" on-tap="doTodo"></paper-icon-button>
+                <paper-icon-button icon="clear" style="color:red" on-tap="removeTodo"></paper-icon-button>
+
             </div>
             <div>Inserted by: [[todo.user]]</div>
             <div style="border-bottom: 2px solid grey">On date: [[todo.date]]</div>
@@ -79,12 +81,14 @@
 
       doTodo: function(e){
 
+          var done = e.model.todo.done == "done" ? "" : "done";
+
           var keyToUpdate = e.model.todo.$key;
           var todo = {
               text : e.model.todo.text,
               date : e.model.todo.date,
               user : e.model.todo.user,
-              done : "done"
+              done : done
           };
           
           fb.database().ref().child('todos/' + keyToUpdate + '/').update(todo);

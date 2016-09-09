@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
@@ -17,6 +18,19 @@
         border-bottom: 1px solid grey;
         padding: 10px;
       }
+
+      .btnContainer{
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .eventContainer:hover .btnContainer{
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+      }
+
     </style>
       
       <firebase-query
@@ -26,11 +40,14 @@
           data="{{events}}">
       </firebase-query>
       <div>
+        
         <template is="dom-repeat" items="[[events]]" as="event">
           <div class="eventContainer">
-              <div><span>[[event.title]]<span>
-                <paper-button raised on-tap="removeEvent">X</paper-button>
-                <paper-button raised on-tap="openEdit">Edit</paper-button>
+              <div><span>[[event.title]]<span><span> - [[event.duration]] hours<span>
+                <span class="btnContainer">
+                  <paper-icon-button icon="editor:mode-edit" on-tap="openEdit"></paper-icon-button>
+                  <paper-icon-button icon="delete" on-tap="removeEvent"></paper-icon-button>
+                <span>
             </div>
           </div>
         </template>
