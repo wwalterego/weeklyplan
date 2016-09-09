@@ -56,13 +56,13 @@
 
       <paper-dialog id="dialog">
        <h3>Edit event</h3>
-       <paper-input label="Title" id="title"></paper-input>
-        <paper-input label="Description" id="description"></paper-input>
-        <paper-input label="Duration" id="duration"></paper-input>
+       <paper-input  id="title" required label="Title" error-message="Required"></paper-input>
+        <paper-input label="Description" id="description" ></paper-input>
+        <paper-input id="duration" required allowed-pattern="[0-9]" label="Duration"  error-message="Required"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
             <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm autofocus on-tap="updateEvent">Accept</paper-button>
+        <paper-button autofocus on-tap="updateEvent">Accept</paper-button>
       </div>
      </paper-dialog>
 
@@ -99,27 +99,39 @@
 
         var event = e.model.event;
 
-        this.$.title.value = event.title;
-        this.$.description.value = event.description;
-        this.$.duration.value = event.duration;
-        this.$.abbreviation.value = event.abbreviation;
+        
+          this.$.title.value = event.title;
+          this.$.description.value = event.description;
+          this.$.duration.value = event.duration;
+          this.$.abbreviation.value = event.abbreviation;
 
-        this.$.dialog.open();
-
-
-       	this.keyToUpdate = event.$key;
+          this.$.dialog.open();
+          this.keyToUpdate = event.$key;
+        
       },
 
       updateEvent(){
         
-        var event = {
-          title: this.$.title.value,
-          description: this.$.description.value,
-          duration: this.$.duration.value,
-          abbreviation: this.$.abbreviation.value 
+        if(this.validator()){
+            var event = {
+            title: this.$.title.value,
+            description: this.$.description.value,
+            duration: this.$.duration.value,
+            abbreviation: this.$.abbreviation.value 
+          }
+
+          fb.database().ref().child('events/' + this.user.uid + '/' + this.keyToUpdate + '/').update(event);
+          this.$.dialog.close();
         }
 
-        fb.database().ref().child('events/' + this.user.uid + '/' + this.keyToUpdate + '/').update(event);
+      },
+
+      validator: function(){
+
+        var validations = [];
+        validations.push(this.$.title.validate());
+        validations.push(this.$.duration.validate());
+        return validations.every(function(val,index){return val == true})
 
       }
     });
