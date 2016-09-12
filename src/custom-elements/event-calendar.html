@@ -302,6 +302,24 @@
       removeEvent: function(e){
         
           fb.database().ref().child('/weekEvents/' + this.user.uid + '/' + e.model.event.$key).remove();
+      },
+
+
+      calculateEnd: function(){
+
+        // fine.ora = inizio.ora + duration.ora;
+        // fine.minuti = inizio.minuti + duration.minuti;
+
+        // if(fine.minuti >59)
+        //   fine.minuti = fine.minuti-60;
+        //   fine.ora = fine.ora +1;
+
+
+        // if(fine.ora > 24)
+        // fine.ora = fine.ora -24;
+
+        // giorno -> calcolo giorno che gia c'è
+
       }
      
     });
