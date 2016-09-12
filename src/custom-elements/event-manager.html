@@ -63,13 +63,13 @@
           if(this.validator()){
              db.ref().child('events/' + this.user.uid + '/').push(event).then(function(){
                 this.clearEvent();
-                this.$.messages.modal("Event added","ok");
+                this.$.messages.dialog("Event added","ok");
              }.bind(this), function(){
-                this.$.messages.modal("Error adding event","error");
+                this.$.messages.dialog("Error adding event","error");
              });
             
           } else{
-              this.$.messages.modal("Some fields aren't correctly completed", "error");
+              this.$.messages.dialog("Some fields aren't correctly completed", "error");
           }
       },
 

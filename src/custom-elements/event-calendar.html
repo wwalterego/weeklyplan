@@ -170,7 +170,7 @@
       },
 
       tap:function(){
-        this.$.messages.modal("provaz", "error");
+        this.$.messages.dialog("provaz", "error");
       },
 
       getEnd: function(item){
@@ -272,7 +272,7 @@
             if(!isOverlapped){
               fb.database().ref().child('weekEvents/' + this.user.uid).push(data);
             } else {
-             this.$.messages.modal("Overlapped events", "error");
+             this.$.messages.dialog("Overlapped events", "error");
             }
 
         }.bind(this)); 
