@@ -105,12 +105,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Drawer content -->
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
+        <div on-tap="tap">tap</div>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view4" href="/view4">Auth</a>
-          <a name="view1" href="/view1">Add New Event</a>
-          <a name="view2" href="/view2">Events List</a>
-          <a name="view3" href="/view3">Calendar View</a>
-          <a name="view5" href="/view5">TODO</a>
+          <a name="view1" href="/view1" style="{{hideLink}}">Add New Event</a>
+          <a name="view2" href="/view2" style="{{hideLink}}">Events List</a>
+          <a name="view3" href="/view3" style="{{hideLink}}">Calendar View</a>
+          <a name="view5" href="/view5" style="{{hideLink}}">TODO</a>
         </iron-selector>
       </app-drawer>
 
@@ -166,7 +167,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         events: {type: Array,notify: true,value: []},
-        user:{type:Object,notify: true}
+        user:{type:Object,notify: true, observer: '_userChanged'},
+        hideLink: {type:String, value:"visibility: hidden"}
       },
 
       observers: [
@@ -181,6 +183,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
+      },
+
+      _userChanged: function(user){
+        console.log(user);
+        
+        if(user != null){
+          if(user.email == undefined){
+              this.hideLink = "visibility: hidden";
+            } else{
+              this.hideLink = "visibility: visible";
+          }
+        } else{
+          this.hideLink = "visibility: hidden"; 
+        }
+      
+      },
+
+      tap:function(){
+        console.log(this.hideLink);
       },
 
       _showPage404: function() {
