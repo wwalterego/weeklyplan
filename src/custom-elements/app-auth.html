@@ -21,8 +21,8 @@
         <app-messages id="messages"></app-messages>
 
 
-        <paper-input required id="email" label="email" error-message="Required"></paper-input>
-        <paper-input required id="password" label="password" type="password" error-message="Required"></paper-input>
+        <paper-input required id="email" label="email" error-message="Required" disabled={{signedIn}}></paper-input>
+        <paper-input required id="password" label="password" type="password" error-message="Required" disabled={{signedIn}}></paper-input>
         <paper-button id="btnLogin" on-tap="login" disabled={{signedIn}}>Log in</paper-button>
         <paper-button id="btnSignup" on-tap="signup" disabled={{signedIn}}>Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout" hidden$={{!signedIn}}>Log Out</paper-button>
