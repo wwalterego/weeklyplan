@@ -43,7 +43,7 @@
         
         <template is="dom-repeat" items="[[events]]" as="event">
           <div class="eventContainer">
-              <div><span>[[event.title]]<span><span> - [[event.duration]] hours<span>
+              <div><span>[[event.title]]<span><span> - [[event.hours]]:[[event.minutes]]<span>
                 <span class="btnContainer">
                   <paper-icon-button icon="editor:mode-edit" on-tap="openEdit"></paper-icon-button>
                   <paper-icon-button icon="delete" on-tap="removeEvent"></paper-icon-button>
@@ -58,7 +58,8 @@
        <h3>Edit event</h3>
        <paper-input  id="title" required label="Title" error-message="Required"></paper-input>
         <paper-input label="Description" id="description" ></paper-input>
-        <paper-input id="duration" required allowed-pattern="[0-9]" label="Duration"  error-message="Required"></paper-input>
+        <paper-input type="number" value="0" label="Hours" id="hours" required allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
+        <paper-input type="number" value="0" min="0" max="59" label="Minutes" id="minutes" required allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
             <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
@@ -102,7 +103,8 @@
         
           this.$.title.value = event.title;
           this.$.description.value = event.description;
-          this.$.duration.value = event.duration;
+          this.$.hours.value = event.hours;
+          this.$.minutes.value = event.minutes;
           this.$.abbreviation.value = event.abbreviation;
 
           this.$.dialog.open();
@@ -116,7 +118,8 @@
             var event = {
             title: this.$.title.value,
             description: this.$.description.value,
-            duration: this.$.duration.value,
+            hours: this.$.hours.value,
+            minutes: this.$.minutes.value,
             abbreviation: this.$.abbreviation.value 
           }
 
@@ -130,7 +133,8 @@
 
         var validations = [];
         validations.push(this.$.title.validate());
-        validations.push(this.$.duration.validate());
+        validations.push(this.$.hours.validate());
+        validations.push(this.$.minutes.validate());
         return validations.every(function(val,index){return val == true})
 
       }

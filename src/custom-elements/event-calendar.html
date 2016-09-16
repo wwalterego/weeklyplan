@@ -75,14 +75,24 @@
   </paper-listbox>
 </paper-dropdown-menu>  
 
+<div>
+    <paper-dropdown-menu label="Start hour: ">
+    <paper-listbox class="dropdown-content" selected="{{startHour}}">
+      <template is="dom-repeat" items="[[start]]" as="hour">
+        <paper-item>[[hour]]</paper-item>
+      </template>
+    </paper-listbox>
+  </paper-dropdown-menu> 
+  <paper-dropdown-menu label="Minutes: ">
+    <paper-listbox class="dropdown-content" selected="{{startMinutes}}">
+      <template is="dom-repeat" items="[[minutes]]" as="minute">
+        <paper-item>[[minute]]</paper-item>
+      </template>
+    </paper-listbox>
+  </paper-dropdown-menu>   
+</div>
 
-<paper-dropdown-menu label="Starts at: ">
-  <paper-listbox class="dropdown-content" selected="{{startHour}}">
-    <template is="dom-repeat" items="[[start]]" as="hour">
-      <paper-item>[[hour]]</paper-item>
-    </template>
-  </paper-listbox>
-</paper-dropdown-menu>  
+
 <paper-button on-tap="addEventToWeek">Add</paper-button>
 <div>
 
@@ -98,7 +108,7 @@
                 <div><span class="eventTitle">[[event.title]]</span>
                   <paper-button class="removeEvent" raised on-tap="removeEvent">X</paper-button>
                 </div>
-                <div>starts at: [[event.start]] - ends [[getEventEnd(event)]]</div>
+                <div>starts at: [[event.startHour]]:[[event.startMinutes]] - ends at: [[getEventEnd(event)]]</div>
               </div>
             </template>
           </template>
@@ -112,23 +122,7 @@
 </div>
 </template>
 
-<!--<template is="dom-if" if="[[isWeekVisible('B')]]">
-  <div id="weekB">
-  <h1>week B</h1>
-  <template is="dom-repeat" items="[[days]]" as="day">
-      <div class="day card">
-          <div id="A_[[day.name]]"><h3>[[day.name]]</h3></div>
-          <div>
-            <template is="dom-repeat" items="[[start]]">
-              <p>[[item]] - [[getEnd(item)]]</p>
-            </template>
-          </div>
-      </div>
-        
-    </template>
-  </div>
 
-</template>-->
 </template>
 
   <script>
@@ -148,6 +142,11 @@
               value: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
             },
 
+            minutes:{
+              type: Array,
+              value: [0,5,10,15,20,25,30,35,40,45,50,55]
+            },
+
              events: {
               type: Array,
               notify: true,
@@ -165,6 +164,7 @@
            chosenEvent: { type: String },
           chosenDay: { type: String },
           startHour: { type: Number},
+          startMinutes: { type: Number},
           showMode: { type: Object,value: "week" }
       },
 
@@ -178,17 +178,51 @@
 
       getEventEnd: function(event){
 
-        var end = Number(event.start) + Number(event.duration);
-        var endStr = end.toString();
 
-        if(end <= 24){return 'at: ' + endStr;}
-        else{
-            var dayIndex = this.getIndex(event.day);
-            if(dayIndex == 7)
-               dayIndex = 0;
 
-            return 'on ' + this.days[dayIndex].name;
-        }
+        var start = {hour: Number(event.startHour), minutes: Number(event.startMinutes)};
+        var duration = {hours: Number(event.hours), minutes: Number(event.minutes)}
+        var end = {hour: start.hour + duration.hours, minutes: start.minutes + duration.minutes};
+
+        console.log(event);
+        console.log(start);
+        console.log(duration);
+        console.log(end);
+
+        return end.hour.toString() + ":" + end.minutes.toString();
+        
+        
+
+
+        // var end = Number(event.start) + Number(event.duration);
+        // var endStr = end.toString();
+
+        // if(end <= 24){return 'at: ' + endStr;}
+        // else{
+        //     var dayIndex = this.getIndex(event.day);
+        //     if(dayIndex == 7)
+        //        dayIndex = 0;
+
+        //     return 'on ' + this.days[dayIndex].name;
+        // }
+
+        // fine.ora = inizio.ora + duration.ora;
+        // fine.minuti = inizio.minuti + duration.minuti;
+
+        // if(fine.minuti >59)
+        //   fine.minuti = fine.minuti-60;
+        //   fine.ora = fine.ora +1;
+
+
+        // if(fine.ora > 24)
+        // fine.ora = fine.ora -24;
+
+        // giorno -> calcolo giorno che gia c'è
+
+
+
+
+
       },
 
       getIndex: function(day){
@@ -225,20 +259,16 @@
         var event = this.events[this.chosenEvent];
         var day = this.days[this.chosenDay];
         var hour = this.start[this.startHour];
+        var minutes = this.minutes[this.startMinutes];
 
       var data = {
         title: event.title,
-        duration: event.duration,
-        start: hour,
+        hours: event.hours,
+        minutes: event.minutes,
+        startHour: hour,
+        startMinutes: minutes,
         day: day.name
-      }
-
-      // var data = {
-      //   title: "prova",
-      //   duration: 4,
-      //   start: 9,
-      //   day: "Tuesday"
-      // }
+      };
 
         fb.database().ref('/weekEvents/' + this.user.uid + '/').once('value').then(function(snapshot) {
             var weekEvents = snapshot.val();
@@ -246,27 +276,27 @@
             var start2 = Number(data.start);
             var end2 = Number(data.start) + Number(data.duration);
             
-            for(var index in weekEvents){
+            // for(var index in weekEvents){
               
-              if(weekEvents[index].day == data.day){
-                var start1 = Number(weekEvents[index].start);
-                var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
+            //   if(weekEvents[index].day == data.day){
+            //     var start1 = Number(weekEvents[index].start);
+            //     var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
                 
-                if(end2 > start1 && end2 <= end1){
-                  console.log('e2 > s1 e e2 < e1');
-                  isOverlapped = true;
-                  break;
-                } else if(start2 < start1 && end2 > end1){
-                  console.log('s2 < s1 e e2 > e1')
-                  isOverlapped = true;
-                  break;
-                } else if(start2 >= start1 && start2 < end1){
-                  console.log('s1 > s1 e s2 < e1');
-                  isOverlapped = true;
-                  break;
-                }
-              }
-            }
+            //     if(end2 > start1 && end2 <= end1){
+            //       console.log('e2 > s1 e e2 < e1');
+            //       isOverlapped = true;
+            //       break;
+            //     } else if(start2 < start1 && end2 > end1){
+            //       console.log('s2 < s1 e e2 > e1')
+            //       isOverlapped = true;
+            //       break;
+            //     } else if(start2 >= start1 && start2 < end1){
+            //       console.log('s1 > s1 e s2 < e1');
+            //       isOverlapped = true;
+            //       break;
+            //     }
+            //   }
+            // }
 
             if(!isOverlapped){
               fb.database().ref().child('weekEvents/' + this.user.uid).push(data);
@@ -301,24 +331,6 @@
       removeEvent: function(e){
         
           fb.database().ref().child('/weekEvents/' + this.user.uid + '/' + e.model.event.$key).remove();
-      },
-
-
-      calculateEnd: function(){
-
-        // fine.ora = inizio.ora + duration.ora;
-        // fine.minuti = inizio.minuti + duration.minuti;
-
-        // if(fine.minuti >59)
-        //   fine.minuti = fine.minuti-60;
-        //   fine.ora = fine.ora +1;
-
-
-        // if(fine.ora > 24)
-        // fine.ora = fine.ora -24;
-
-        // giorno -> calcolo giorno che gia c'è
-
       }
      
     });

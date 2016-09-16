@@ -10,6 +10,11 @@
 
         padding: 10px;
       }
+
+      #durationContainer paper-input{
+          width: 50%;
+          /*display: inline;*/
+      }
     </style>
 
   <app-messages id="messages"></app-messages>
@@ -18,7 +23,12 @@
         <h1>EVENT MANAGER</h1>
         <paper-input label="Title" id="title"  required error-message="Required field"></paper-input>
         <paper-input label="Description" id="description"></paper-input>
-        <paper-input label="Duration" id="duration" required allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
+        <div id="durationContainer">
+          <!--<div><h3>Duration</h3></div>-->
+          <paper-input type="number" value="0" label="Hours" id="hours" required allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
+          <paper-input type="number" value="0" min="1" max="59" label="Minutes" id="minutes" required allowed-pattern="[0-9]" error-message="Required numbers only field"></paper-input>
+        </div>
+        
         <paper-input label="Abbreviation" id="abbreviation"></paper-input>
         <paper-button raised on-tap="addEvent" disabled="{{this.$.title.invalid}}">+</paper-button>
     </div>
@@ -38,11 +48,6 @@
       observers: [
         '_invalidValuesChanged(invalidValues.*)'
       ],
-      
-
-      valid: function(w){
-        console.log('validant0o');
-      },
 
       addEvent: function(){
         
@@ -51,13 +56,15 @@
           var title = this.$.title.value;
           var description = this.$.description.value;
           var abbreviation = this.$.abbreviation.value;
-          var duration = this.$.duration.value;
+          var hours = this.$.hours.value;
+          var minutes = this.$.minutes.value;
           
           var event = {
             title: title,
             description: description,
             abbreviation: abbreviation,
-            duration: duration
+            hours: hours,
+            minutes: minutes
           };
           
           if(this.validator()){
@@ -69,7 +76,7 @@
              });
             
           } else{
-              this.$.messages.dialog("Some fields aren't correctly completed", "error");
+              this.$.messages.dialog("Some fields aren't completed correctly", "error");
           }
       },
 
@@ -77,7 +84,7 @@
 
         var validations = [];
         validations.push(this.$.title.validate());
-        validations.push(this.$.duration.validate());
+        validations.push(this.$.minutes.validate());
         return validations.every(function(val,index){return val == true})
 
       },
@@ -86,7 +93,8 @@
           this.$.title.value = "";
           this.$.description.value = "";
           this.$.abbreviation.value = "";
-          this.$.duration.value = "";
+          this.$.hours.value = "";
+          this.$.minutes.value = "";
       },
 
        _invalidValuesChanged : function(values) {
