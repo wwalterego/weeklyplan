@@ -1,7 +1,5 @@
 {
   "rules": {
-    //".read": "auth != null",
-    //".write": "auth != null"
     
     "events":{
       "$uid": {
@@ -10,6 +8,12 @@
       }
     },
     "weekEvents":{
+      "$uid": {
+        ".read": "true", //auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "users":{
       "$uid": {
         ".read": "true", //auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid"
