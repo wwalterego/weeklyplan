@@ -133,12 +133,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             database-url="https://weeklyplan.firebaseio.com">
         </firebase-app>
 
-         <firebase-query
-          id="eventsQuery"
+          <firebase-auth 
+          id="auth" 
+          user="{{user}}" 
+          on-error="handleError" 
+          status-Known="{{statusKnown}}" 
+          signed-In="{{signedIn}}">
+        </firebase-auth>
+
+           <firebase-query
+          id="query"
           app-name="weeklyplan"
-          path="/events"
+          path="events/{{user.uid}}"
           data="{{events}}">
-          </firebase-query>
+            </firebase-query>
 
         <iron-pages
             selected="[[page]]"
