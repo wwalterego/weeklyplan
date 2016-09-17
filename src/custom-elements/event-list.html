@@ -43,7 +43,7 @@
         
         <template is="dom-repeat" items="[[events]]" as="event">
           <div class="eventContainer">
-              <div><span>[[event.title]]<span><span> - [[event.hours]]:[[event.minutes]]<span>
+              <div><span>[[event.title]]<span><span> - [[event.hours]]:{{getMinutes(event)}}<span>
                 <span class="btnContainer">
                   <paper-icon-button icon="editor:mode-edit" on-tap="openEdit"></paper-icon-button>
                   <paper-icon-button icon="delete" on-tap="removeEvent"></paper-icon-button>
@@ -137,6 +137,13 @@
         validations.push(this.$.minutes.validate());
         return validations.every(function(val,index){return val == true})
 
+      },
+
+      getMinutes: function(event){
+        
+        if(event.minutes.toString() == "0")
+          return "00"
+        return event.minutes;
       }
     });
   </script>

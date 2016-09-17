@@ -108,7 +108,7 @@
                 <div><span class="eventTitle">[[event.title]]</span>
                   <paper-button class="removeEvent" raised on-tap="removeEvent">X</paper-button>
                 </div>
-                <div>starts at [[event.startHour]]:[[event.startMinutes]] - ends [[getEventEnd(event)]]</div>
+                <div>starts at [[doubleZeroIt(event.startHour)]]:[[doubleZeroIt(event.startMinutes)]] - ends [[getEventEnd(event)]]</div>
               </div>
             </template>
           </template>
@@ -187,8 +187,11 @@
           end.hour += 1;
         }
 
+        end.minutes = this.doubleZeroIt(end.minutes);
+
         if(end.hour > 24){
           end.hour -= 24;
+          this.doubleZeroIt(end.hour);
             var dayIndex = this.getIndex(event.day);
             if(dayIndex == 7)
                dayIndex = 0;
@@ -196,6 +199,14 @@
         } else{
           return "at " + end.hour.toString() + ":" + end.minutes.toString();
         }
+      },
+
+      doubleZeroIt: function(val){
+
+       if(val.toString() == "0")
+        return "00";
+       return val;
+          
       },
 
       getIndex: function(day){
