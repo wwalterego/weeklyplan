@@ -26,6 +26,7 @@
         <paper-button id="btnLogin" on-tap="login" disabled={{signedIn}}>Log in</paper-button>
         <paper-button id="btnSignup" on-tap="signup" disabled={{signedIn}}>Sign Up</paper-button>
         <paper-button id="btnLogout" on-tap="logout" hidden$={{!signedIn}}>Log Out</paper-button>
+        <paper-button id="btnLogout" on-tap="saveUserData" hidden$={{!signedIn}}>Save User Data</paper-button>
         <paper-button  on-tap="googleLogin" hidden>google login</paper-button>
         <div id="userEmail">Logged user: {{user.email}}</div>
         <div id="userUid" hidden>{{user.uid}}</div>
@@ -61,17 +62,24 @@
 
       },
 
+      saveUserData: function(){
+          var data = {email: this.user.email, role:"user"};
+          fb.database().ref().child('users/' + this.user.uid).set(data);
+      },
+
       signup: function(){
           var email = this.$.email.value;
           var password = this.$.password.value;
 
           if(this.validator()){
-             this.$.auth.createUserWithEmailAndPassword(email, password).then(function(){
+             this.$.auth.createUserWithEmailAndPassword(email, password).then(function(user){
                 this.$.messages.dialog("New user created","ok");
+                var data = {email: user.email, role:"user"};
+                fb.database().ref().child('users/' + user.uid).set(data);
              }.bind(this), function(){
                  this.$.messages.dialog("Error creating the new user","error");
              }.bind(this));
-             
+
           } else{
               this.$.messages.dialog("Email and password required","error");
           }
@@ -91,16 +99,20 @@
       handleError: function(e){
           console.log(e);
       },
-      
 
       _statusKnowChangeHandler: function(status){
-           if(this.user.email){
-            if(this.user.email == "walter.miani@gmail.com"){
-               this.$.userEmail.innerHTML = "Logged user: Admin";
-            }       
+          if(this.user){
+                if(this.user.email){
+                    if(this.user.role == "admin"){
+                    this.$.userEmail.innerHTML = "Logged user: Admin";
+                    }       
+                } else{
+                    
+                 }
           } else{
-               this.$.userEmail.innerHTML = "Not logged in";
+              this.$.userEmail.innerHTML = "Not logged in";
           }
+           
       },
 
       validator: function(){
