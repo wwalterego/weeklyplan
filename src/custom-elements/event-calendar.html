@@ -246,30 +246,33 @@
         fb.database().ref('/weekEvents/' + this.user.uid + '/').once('value').then(function(snapshot) {
             var weekEvents = snapshot.val();
             var isOverlapped = false;
-            var start2 = Number(data.start);
-            var end2 = Number(data.start) + Number(data.duration);
+            //start and end converted into total minutes
+            var start2 = Number(data.startHour)*60 + Number(data.startMinutes);
+            var end2 = Number(data.startHour)*60 + Number(data.startMinutes)
+             + Number(data.hours)*60 + Number(data.minutes);
             
-            // for(var index in weekEvents){
+            for(var index in weekEvents){
               
-            //   if(weekEvents[index].day == data.day){
-            //     var start1 = Number(weekEvents[index].start);
-            //     var end1 = Number(weekEvents[index].start) + Number(weekEvents[index].duration);
+              if(weekEvents[index].day == data.day){
+                var start1 = Number(weekEvents[index].startHour)*60 + Number(weekEvents[index].startMinutes);
+                var end1 = Number(weekEvents[index].startHour)*60 + Number(weekEvents[index].startMinutes)
+                + Number(weekEvents[index].hours)*60 + Number(weekEvents[index].minutes);
                 
-            //     if(end2 > start1 && end2 <= end1){
-            //       console.log('e2 > s1 e e2 < e1');
-            //       isOverlapped = true;
-            //       break;
-            //     } else if(start2 < start1 && end2 > end1){
-            //       console.log('s2 < s1 e e2 > e1')
-            //       isOverlapped = true;
-            //       break;
-            //     } else if(start2 >= start1 && start2 < end1){
-            //       console.log('s1 > s1 e s2 < e1');
-            //       isOverlapped = true;
-            //       break;
-            //     }
-            //   }
-            // }
+                if(end2 > start1 && end2 <= end1){
+                  console.log('e2 > s1 e e2 < e1');
+                  isOverlapped = true;
+                  break;
+                } else if(start2 < start1 && end2 > end1){
+                  console.log('s2 < s1 e e2 > e1')
+                  isOverlapped = true;
+                  break;
+                } else if(start2 >= start1 && start2 < end1){
+                  console.log('s1 > s1 e s2 < e1');
+                  isOverlapped = true;
+                  break;
+                }
+              }
+            }
 
             if(!isOverlapped){
               fb.database().ref().child('weekEvents/' + this.user.uid).push(data);
@@ -284,8 +287,8 @@
 
       sortByStart: function(a,b){
 
-      var sa = Number(a.start);
-      var sb = Number(b.start);
+      var sa = Number(a.startHour)*60 + Number(a.startMinutes);
+      var sb = Number(b.startHour)*60 + Number(b.startMinutes);
       var retval;
       
       if(sa == sb){
