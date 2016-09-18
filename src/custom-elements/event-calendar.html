@@ -93,12 +93,12 @@
 </div>
 
 
-<paper-button on-tap="addEventToWeek">Add</paper-button>
+<paper-button on-tap="addEventToWeek" raised>Add</paper-button>
 <div>
 
 <template is="dom-if" if="[[isWeekVisible('A')]]">
 <div id="weekA">
-  <h1>week A</h1>
+  <!--<h1>week A</h1>-->
   <template is="dom-repeat" items="[[days]]" as="day">
      <div class="day card" hidden$="{{computeShowMode(day, showMode)}}">
         <div id="A_[[day.name]]" class$="{{isToday(day)}}"><h3>[[day.name]]</h3></div>
