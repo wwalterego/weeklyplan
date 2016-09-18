@@ -1,6 +1,5 @@
 {
   "rules": {
-    
     "events":{
       "$uid": {
         ".read": "true", //auth != null && auth.uid == $uid",
@@ -14,6 +13,7 @@
       }
     },
     "users":{
+      ".read": "true",
       "$uid": {
         ".read": "true", //auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid"

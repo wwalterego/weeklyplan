@@ -17,20 +17,34 @@
 
         padding: 10px;
       }
+
+      .userContainer {
+        border-bottom: solid 2px grey;
+      }
       
       
     </style>
 
 
-    <firebase-app
-            name="weeklyplanAdmin"
-            api-key="AIzaSyA9MGv4AdP8fQIjqL7Of3RZjsEgcpgkZE0"
-            auth-domain="weeklyplan.firebaseapp.com"
-            database-url="https://weeklyplan.firebaseio.com">
-    </firebase-app>
+    <firebase-query
+          id="users"
+          app-name="weeklyplan"
+          path="users"
+          data="{{users}}">
+    </firebase-query>
 
     
-    <div>ADMIN PAGE</div>
+    <h1>ADMIN PAGE</h1>
+
+    <h3>User list</h3>
+
+    <template is="dom-repeat" items="{{users}}" as="user">
+      <div class="userContainer">
+        <div>User: [[user.email]]</div>
+        <div>Uid: [[user.$key]]</div>
+        <div>Role: [[user.role]]</div>
+      </div>
+    </template>
 
     </template>
 
@@ -39,7 +53,8 @@
       is: 'admin-page',
 
       properties: {
-        user: {type: Object,notify:true}
+        
+        users: Object
       }
       
     });
